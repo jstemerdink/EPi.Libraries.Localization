@@ -1,6 +1,4 @@
-﻿# A set of beta, test stuff. 
-
-By Jeroen Stemerdink
+﻿By Jeroen Stemerdink
 
 ## Parts
 

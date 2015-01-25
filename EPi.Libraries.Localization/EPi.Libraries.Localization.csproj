@@ -193,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="EPi.Libraries.Localization.nuspec" />
     <None Include="EPiServer.Libraries.snk" />
     <None Include="packages.config" />
     <None Include="README.md" />

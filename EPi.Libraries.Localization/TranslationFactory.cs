@@ -47,21 +47,16 @@ namespace EPi.Libraries.Localization
     {
         #region Static Fields
 
-        /// <summary>
-        ///     The synclock object.
-        /// </summary>
-        private static readonly object InstanceLock = new object();
+        // Static members are 'eagerly initialized', that is,  immediately when class is loaded for the first time.
+        // .NET guarantees thread safety for static initialization
+        private static readonly TranslationFactory TranslationFactoryInstance = new TranslationFactory();
 
         /// <summary>
         ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationFactory" /> class.
         /// </summary>
         private static readonly ILog Logger = LogManager.GetLogger(typeof(TranslationFactory));
 
-        /// <summary>
-        ///     The one and only TranslationFactory instance.
-        /// </summary>
-        private static volatile TranslationFactory instance;
-
+        
         #endregion
 
         #region Fields
@@ -92,6 +87,7 @@ namespace EPi.Libraries.Localization
 
         #region Public Properties
 
+
         /// <summary>
         ///     Gets the instance of the TranslationFactory object.
         /// </summary>
@@ -99,21 +95,7 @@ namespace EPi.Libraries.Localization
         {
             get
             {
-                // Double checked locking
-                if (instance != null)
-                {
-                    return instance;
-                }
-
-                lock (InstanceLock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new TranslationFactory();
-                    }
-                }
-
-                return instance;
+                return TranslationFactoryInstance;
             }
         }
 

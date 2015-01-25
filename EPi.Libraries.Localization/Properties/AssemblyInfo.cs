@@ -27,16 +27,16 @@ using System.Runtime.InteropServices;
 
 using log4net.Config;
 
-[assembly: AssemblyTitle("EPiServer.Libraries.Localization")]
+[assembly: AssemblyTitle("EPi.Libraries.Localization")]
 [assembly: AssemblyDescription("Library to create translations within an EPiServer site.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
-[assembly: AssemblyProduct("EPiServer.Libraries.Localization")]
+[assembly: AssemblyProduct("EPi.Libraries.Localization")]
 [assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
 [assembly: Guid("d6158e5e-1682-4753-9706-b26935a98ee8")]
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: XmlConfigurator(Watch = true)]

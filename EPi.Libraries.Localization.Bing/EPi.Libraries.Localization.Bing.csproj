@@ -181,9 +181,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="EPi.Libraries.Localization.Bing.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="EPiServer.Libraries.snk" />
     <None Include="packages.config" />
     <None Include="README.md" />
+    <None Include="web.config.install.xdt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPi.Libraries.Localization\EPi.Libraries.Localization.csproj">

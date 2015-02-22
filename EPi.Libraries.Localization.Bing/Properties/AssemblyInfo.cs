@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 using log4net.Config;
 
 [assembly: AssemblyTitle("EPi.Libraries.Localization.Bing")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provider for EPi.Libraries.Localization to create translations with Bing.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
 [assembly: AssemblyProduct("EPi.Libraries.Localization.Bing")]

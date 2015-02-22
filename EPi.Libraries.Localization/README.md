@@ -2,8 +2,7 @@
 
 By Jeroen Stemerdink
 
-![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/jstemerdink/EPi.Libraries.Localization?branch=master&svg=true)
-
+[![Build status](https://ci.appveyor.com/api/projects/status/60vg1xeix98n9w3o/branch/master?svg=true)](https://ci.appveyor.com/project/jstemerdink/epi-libraries-localization/branch/master)
 ## About
 
 I wanted Editors to be able to change translations on their own, with no fear of loadbalancers / file replication making a mess of things. So it needed to be done within EPiServer itself, not with a plugin in admin mode, but in the content tree.

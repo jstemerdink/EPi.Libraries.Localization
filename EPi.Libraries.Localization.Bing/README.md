@@ -2,6 +2,8 @@
 
 By Jeroen Stemerdink
 
+![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/jstemerdink/EPi.Libraries.Localization?branch=master&svg=true)
+
 ## About
 
 Adding this in combination with the localization provider will create a lanaguage version for all enabled languages that have no language version when publishing your translation.

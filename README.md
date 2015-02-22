@@ -1,4 +1,8 @@
-﻿By Jeroen Stemerdink
+﻿# EPi.Libraries.Localization
+
+By Jeroen Stemerdink
+
+![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/jstemerdink/EPi.Libraries.Localization?branch=master&svg=true)
 
 ## Parts
 

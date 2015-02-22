@@ -1,6 +1,8 @@
-﻿# A custom localization provider for EPiServer 7. 
+﻿# A custom localization provider for EPiServer 7.
 
 By Jeroen Stemerdink
+
+![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/jstemerdink/EPi.Libraries.Localization?branch=master&svg=true)
 
 ## About
 

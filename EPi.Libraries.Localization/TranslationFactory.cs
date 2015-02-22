@@ -47,10 +47,6 @@ namespace EPi.Libraries.Localization
     {
         #region Static Fields
 
-        // Static members are 'eagerly initialized', that is,  immediately when class is loaded for the first time.
-        // .NET guarantees thread safety for static initialization
-        private static readonly TranslationFactory TranslationFactoryInstance = new TranslationFactory();
-
         /// <summary>
         ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationFactory" /> class.
         /// </summary>
@@ -70,6 +66,16 @@ namespace EPi.Libraries.Localization
         ///     Gets a value indicating whether [a translation service is activated].
         /// </summary>
         private bool? translationServiceActivated;
+
+        /// <summary>
+        ///     The one and only TranslationFactory instance.
+        /// </summary>
+        private static volatile TranslationFactory instance;
+
+        /// <summary>
+        ///     The synclock object.
+        /// </summary>
+        private static readonly object SyncLock = new object();
 
         #endregion
 
@@ -95,7 +101,21 @@ namespace EPi.Libraries.Localization
         {
             get
             {
-                return TranslationFactoryInstance;
+                // Double checked locking
+                if (instance != null)
+                {
+                    return instance;
+                }
+
+                lock (SyncLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new TranslationFactory();
+                    }
+                }
+
+                return instance;
             }
         }
 

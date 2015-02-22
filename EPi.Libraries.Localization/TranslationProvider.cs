@@ -199,7 +199,9 @@ namespace EPi.Libraries.Localization
 
             try
             {
-                foreach (CultureInfo cultureInfo in this.AvailableLanguages)
+                List<CultureInfo> availableLanguages = this.AvailableLanguages.ToList();
+
+                foreach (CultureInfo cultureInfo in availableLanguages)
                 {
                     this.AddKey(TranslationFactory.Instance.TranslationContainerReference, cultureInfo);
                 }

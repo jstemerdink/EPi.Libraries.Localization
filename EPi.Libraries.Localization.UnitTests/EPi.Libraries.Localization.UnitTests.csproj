@@ -127,10 +127,6 @@
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.4.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\iTextSharp.5.4.3\lib\itextsharp.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
       <Private>True</Private>
@@ -224,10 +220,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EPi.Libraries.Localization.Bing\EPi.Libraries.Localization.Bing.csproj">
-      <Project>{eae8d2bf-a3a6-4418-b49d-5fa5484d3ba7}</Project>
-      <Name>EPi.Libraries.Localization.Bing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EPi.Libraries.Localization\EPi.Libraries.Localization.csproj">
       <Project>{4750aa22-03a8-48cb-a78e-32ae161c8c67}</Project>
       <Name>EPi.Libraries.Localization</Name>

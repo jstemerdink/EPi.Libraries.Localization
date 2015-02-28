@@ -1,4 +1,4 @@
-﻿// Copyright© 201 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -21,14 +21,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-
-using log4net.Config;
 
 [assembly: AssemblyTitle("EPi.Libraries.Localization.Bing")]
 [assembly: AssemblyDescription("")]

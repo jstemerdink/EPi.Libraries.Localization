@@ -25,8 +25,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-using log4net.Config;
-
 [assembly: AssemblyTitle("EPi.Libraries.Localization")]
 [assembly: AssemblyDescription("Library to create translations within an EPiServer site.")]
 [assembly: AssemblyConfiguration("")]

@@ -1,4 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -32,11 +32,10 @@ using log4net.Config;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
 [assembly: AssemblyProduct("EPi.Libraries.Localization")]
-[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2014")]
+[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
 [assembly: Guid("d6158e5e-1682-4753-9706-b26935a98ee8")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: XmlConfigurator(Watch = true)]

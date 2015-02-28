@@ -1,4 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 201 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -31,11 +31,11 @@ using System.Runtime.InteropServices;
 using log4net.Config;
 
 [assembly: AssemblyTitle("EPi.Libraries.Localization.Bing")]
-[assembly: AssemblyDescription("Provider for EPi.Libraries.Localization to create translations with Bing.")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
 [assembly: AssemblyProduct("EPi.Libraries.Localization.Bing")]
-[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2014")]
+[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -63,4 +63,3 @@ using log4net.Config;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: XmlConfigurator(Watch = true)]

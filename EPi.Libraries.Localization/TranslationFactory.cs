@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -33,10 +34,11 @@ using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAccess;
+using EPiServer.Logging;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 
-using log4net;
+using LogManager = EPiServer.Logging.LogManager;
 
 namespace EPi.Libraries.Localization
 {
@@ -48,10 +50,10 @@ namespace EPi.Libraries.Localization
         #region Static Fields
 
         /// <summary>
-        ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationFactory" /> class.
+        ///     Initializes the <see cref="EPiServer.Logging.LogManager">LogManager</see> for the <see cref="TranslationFactory" /> class.
         /// </summary>
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(TranslationFactory));
-
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationFactory));
+        
         
         #endregion
 
@@ -72,11 +74,6 @@ namespace EPi.Libraries.Localization
         /// </summary>
         private static volatile TranslationFactory instance;
 
-        /// <summary>
-        ///     The synclock object.
-        /// </summary>
-        private static readonly object SyncLock = new object();
-
         #endregion
 
         #region Constructors and Destructors
@@ -95,8 +92,14 @@ namespace EPi.Libraries.Localization
 
 
         /// <summary>
-        ///     Gets the instance of the TranslationFactory object.
+        ///     The synclock object.
         /// </summary>
+        private static readonly object SyncLock = new object();
+
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        /// <value>The instance.</value>
         public static TranslationFactory Instance
         {
             get
@@ -168,7 +171,7 @@ namespace EPi.Libraries.Localization
                 }
                 catch (ActivationException activationException)
                 {
-                    Logger.Info("[Localization] No translation service available", activationException);
+                    Logger.Information("[Localization] No translation service available", activationException);
                 }
 
                 return null;
@@ -212,9 +215,9 @@ namespace EPi.Libraries.Localization
             List<LanguageBranch> enabledLanguages = this.LanguageBranchRepository.Service.ListEnabled().ToList();
 
             foreach (LanguageBranch languageBranch in
-                enabledLanguages.Where(lb => lb.Culture.Name != page.LanguageBranch))
+                enabledLanguages.Where(lb => !lb.Culture.Equals(page.Language)))
             {
-                this.CreateLanguageBranch(page, languageBranch.Culture.Name);
+                this.CreateLanguageBranch(page, languageBranch.Culture);
             }
         }
 
@@ -244,12 +247,12 @@ namespace EPi.Libraries.Localization
             return attr != null;
         }
 
-        private void CreateLanguageBranch(PageData page, string languageBranch)
+        private void CreateLanguageBranch(PageData page, CultureInfo language)
         {
             // Check if language already exists
             bool languageExists =
                 this.ContentRepository.Service.GetLanguageBranches<PageData>(page.PageLink)
-                    .Any(p => string.Compare(p.LanguageBranch, languageBranch, StringComparison.OrdinalIgnoreCase) == 0);
+                    .Any(p => p.Language.Equals(language));
 
             if (languageExists)
             {
@@ -263,7 +266,7 @@ namespace EPi.Libraries.Localization
                 TranslationItem languageItemVersion =
                     this.ContentRepository.Service.CreateLanguageBranch<TranslationItem>(
                         page.PageLink,
-                        new LanguageSelector(languageBranch));
+                        language);
 
                 languageItemVersion.PageName = page.PageName;
                 languageItemVersion.URLSegment = page.URLSegment;
@@ -289,7 +292,7 @@ namespace EPi.Libraries.Localization
             {
                 PageData languageVersion = this.ContentRepository.Service.CreateLanguageBranch<PageData>(
                     page.PageLink,
-                    new LanguageSelector(languageBranch));
+                    language);
 
                 languageVersion.PageName = page.PageName;
                 languageVersion.URLSegment = page.URLSegment;
@@ -315,7 +318,7 @@ namespace EPi.Libraries.Localization
 
             if (containerReference != null)
             {
-                Logger.Info("[Localization] First translation container under RootPage used.");
+                Logger.Information("[Localization] First translation container under RootPage used.");
 
                 containerPageReference = containerReference.PageLink;
 
@@ -352,7 +355,7 @@ namespace EPi.Libraries.Localization
                 return containerPageReference;
             }
 
-            Logger.Info("[Localization] No translation container specified.");
+            Logger.Information("[Localization] No translation container specified.");
 
             containerReference =
                 this.ContentRepository.Service.GetChildren<TranslationContainer>(containerPageReference)
@@ -360,11 +363,11 @@ namespace EPi.Libraries.Localization
 
             if (containerReference == null)
             {
-                Logger.Info("[Localization] No translation container found.");
+                Logger.Information("[Localization] No translation container found.");
                 return containerPageReference;
             }
 
-            Logger.Info("[Localization] First translation container under StartPage used.");
+            Logger.Information("[Localization] First translation container under StartPage used.");
 
             containerPageReference = containerReference.PageLink;
 

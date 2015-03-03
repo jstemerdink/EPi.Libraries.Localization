@@ -52,7 +52,7 @@ namespace EPi.Libraries.Localization.UnitTests.Subjects
         /// <summary>
         /// The of..c
         /// </summary>
-        private Because of = () => result = CmsContext.ContentRepository.GetChildren<TranslationItem>(ContainerReference, new LanguageSelector(CmsContext.MasterLanguage.Name)).FirstOrDefault();
+        private Because of = () => result = CmsContext.ContentRepository.GetChildren<TranslationItem>(ContainerReference, CmsContext.MasterLanguage).FirstOrDefault();
 
         /// <summary>
         /// The should_be_translated.
@@ -129,7 +129,7 @@ namespace EPi.Libraries.Localization.UnitTests.Subjects
     public class Get_a_translation_value_for_a_second_level_translation_item : TranslationSpecs
     {
         /// <summary>
-        /// The result. 
+        /// The result.
         /// </summary>
         private static string result;
 
@@ -320,32 +320,5 @@ namespace EPi.Libraries.Localization.UnitTests.Subjects
         /// Should echo the original text.
         /// </summary>
         private It should_be_the_translated_category_for_Dutch = () => result.ShouldEqual("CategorieVertaling Een");
-    }
-
-    /// <summary>
-    /// Get a translation with a translation control.
-    /// </summary>
-    [Subject("Translations")]
-    public class Get_a_translation_for_a_translate_control : TranslationSpecs
-    {
-        /// <summary>
-        /// The result.
-        /// </summary>
-        private static string result;
-
-        /// <summary>
-        /// The category
-        /// </summary>
-        private static Translate translate = new Translate { Text = "/textone" };
-
-        /// <summary>
-        /// Render the control.
-        /// </summary>
-        private Because of = () => result = GetRenderedText(translate);
-
-        /// <summary>
-        /// Should be the translated control.
-        /// </summary>
-        private It should_be_the_translated_value = () => result.ShouldEqual("Translation One");
     }
 }

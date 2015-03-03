@@ -57,8 +57,8 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
                 CmsContext.CreatePageType(typeof(TranslationItem));
                 CmsContext.CreatePageType(typeof(CategoryTranslationContainer));
 
-                LanguageSelector masterLanguageSelector = new LanguageSelector(CmsContext.MasterLanguage.Name);
-                LanguageSelector secondLanguageSelector = new LanguageSelector(CmsContext.SecondLanguage.Name);
+                //LanguageSelector masterLanguageSelector = new LanguageSelector(CmsContext.MasterLanguage.Name);
+                //LanguageSelector secondLanguageSelector = new LanguageSelector(CmsContext.SecondLanguage.Name);
 
                 CmsContext.CreateContent<StartPage>("StartPage", ContentReference.RootPage);
 
@@ -66,45 +66,43 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
                     CmsContext.CreateContent<TranslationContainer>("Translations", ContentReference.RootPage)
                         .ContentLink;
 
-                CmsContext.CreateLanguageVersionOfContent<TranslationContainer>(ContainerReference, secondLanguageSelector);
+                CmsContext.CreateLanguageVersionOfContent<TranslationContainer>(ContainerReference, CmsContext.SecondLanguage);
 
                 TranslationReference =
-                    CreateTranslationItem("TextOne", "Translation One", ContainerReference, masterLanguageSelector)
+                    CreateTranslationItem("TextOne", "Translation One", ContainerReference)
                         .ContentLink;
-                AddLanguageVersionToTranslationItem(TranslationReference, "Vertaling Een", secondLanguageSelector);
+                AddLanguageVersionToTranslationItem(TranslationReference, "Vertaling Een", CmsContext.SecondLanguage);
 
                 ContentReference subContainerReference =
                     CmsContext.CreateContent<TranslationContainer>("SubTranslations", ContainerReference)
                         .ContentLink;
                 CmsContext.CreateLanguageVersionOfContent<TranslationContainer>(
                     subContainerReference,
-                    secondLanguageSelector);
+                    CmsContext.SecondLanguage);
 
                 ContentReference subItemReference =
                     CreateTranslationItem(
                         "SubTextOne",
                         "SubTranslation One",
-                        subContainerReference,
-                        masterLanguageSelector).ContentLink;
-                AddLanguageVersionToTranslationItem(subItemReference, "Sub Vertaling Een", secondLanguageSelector);
+                        subContainerReference).ContentLink;
+                AddLanguageVersionToTranslationItem(subItemReference, "Sub Vertaling Een", CmsContext.SecondLanguage);
 
                 ContentReference categoryContainerReference =
                     CmsContext.CreateContent<CategoryTranslationContainer>("Categories", ContainerReference)
                         .ContentLink;
                 CmsContext.CreateLanguageVersionOfContent<CategoryTranslationContainer>(
                     categoryContainerReference,
-                    secondLanguageSelector);
+                    CmsContext.SecondLanguage);
 
                 ContentReference categoryReference =
                     CreateTranslationItem(
                         "CategoryOne",
                         "CategoryTranslation One",
-                        categoryContainerReference,
-                        masterLanguageSelector).ContentLink;
+                        categoryContainerReference).ContentLink;
                 AddLanguageVersionToTranslationItem(
                     categoryReference,
                     "CategorieVertaling Een",
-                    secondLanguageSelector);
+                    CmsContext.SecondLanguage);
 
                 NameValueCollection configValues = new NameValueCollection { { "containerid", "0" } };
 
@@ -156,7 +154,7 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
         /// </summary>
         /// <param name="contentLink">The content link.</param>
         /// <param name="translation">The translation.</param>
-        /// <param name="languageSelector">The language selector.</param>
+        /// <param name="language">The language.</param>
         /// <returns>The <see cref="ContentReference" />.</returns>
         /// <exception cref="EPiServer.Core.ContentNotFoundException">TranslationItem not found.</exception>
         /// <exception cref="EPiServer.Core.EPiServerException">Creating a copy of the item did not succeed.</exception>
@@ -164,12 +162,12 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
         protected static TranslationItem AddLanguageVersionToTranslationItem(
             [NotNull] ContentReference contentLink,
             [NotNull] string translation,
-            [NotNull] LanguageSelector languageSelector)
+            [NotNull] CultureInfo language)
         {
             // Create the base language version
             TranslationItem translationItem = CmsContext.CreateLanguageVersionOfContent<TranslationItem>(
                 contentLink,
-                languageSelector);
+                language);
 
             // Change the properties that need changing for this version.
             translationItem.Translation = translation;
@@ -183,14 +181,12 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
         /// <param name="originalText">The original text.</param>
         /// <param name="translation">The translation.</param>
         /// <param name="parentLink">The parent link.</param>
-        /// <param name="languageSelector">The language selector.</param>
         /// <returns>The <see cref="ContentReference" />.</returns>
         [NotNull]
         protected static TranslationItem CreateTranslationItem(
             [NotNull] string originalText,
             [NotNull] string translation,
-            [NotNull] ContentReference parentLink,
-            [NotNull] LanguageSelector languageSelector)
+            [NotNull] ContentReference parentLink)
         {
             // Create the base item
             TranslationItem translationItem = CmsContext.CreateContent<TranslationItem>(originalText, parentLink);
@@ -202,20 +198,7 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
             return translationItem;
         }
 
-        [NotNull]
-        protected static void UpdateTranslationItem(
-            [NotNull] ContentReference contentLink,
-            [NotNull] string translation,
-            [NotNull] LanguageSelector languageSelector)
-        {
-
-            TranslationItem translationItem =
-              CmsContext.ContentRepository.Get<TranslationItem>(contentLink, new LanguageSelector(CultureInfo.CurrentUICulture.Name));
-            
-            // Set the additional properties for this type.
-            translationItem.Translation = translation;
-            CmsContext.UpdateContent(translationItem, new LanguageSelector(CultureInfo.CurrentUICulture.Name));
-        }
+       
 
         /// <summary>
         ///     Gets the rendered text.

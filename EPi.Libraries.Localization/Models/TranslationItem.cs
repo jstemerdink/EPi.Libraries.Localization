@@ -77,7 +77,7 @@ namespace EPi.Libraries.Localization.Models
                 // Use the masterlanguage branch, that one is always available.
                 TranslationItem masterLanguagePage = this.ContentRepository.Service.Get<TranslationItem>(
                     this.PageLink,
-                    new LanguageSelector(this.MasterLanguageBranch));
+                    this.MasterLanguage);
 
                 // Get the ancestors
                 IEnumerable<IContent> ancestors =

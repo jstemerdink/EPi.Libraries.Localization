@@ -183,7 +183,18 @@ namespace EPi.Libraries.Localization
         public override void Initialize(string name, NameValueCollection config)
         {
             base.Initialize(name, config);
-            this.LoadTranslations();
+
+            this.cacheLock.EnterWriteLock();
+
+            try
+            {
+                this.LoadTranslations();
+            }
+            finally
+            {
+                this.cacheLock.ExitWriteLock();
+            }
+            
         }
 
         #endregion
@@ -195,21 +206,13 @@ namespace EPi.Libraries.Localization
         /// </summary>
         private void LoadTranslations()
         {
-            this.cacheLock.EnterWriteLock();
-
-            try
-            {
-                List<CultureInfo> availableLanguages = this.AvailableLanguages.ToList();
+            List<CultureInfo> availableLanguages = this.AvailableLanguages.ToList();
 
                 foreach (CultureInfo cultureInfo in availableLanguages)
                 {
                     this.AddKey(TranslationFactory.Instance.TranslationContainerReference, cultureInfo);
                 }
-            }
-            finally
-            {
-                this.cacheLock.ExitWriteLock();
-            }
+            
         }
 
         /// <summary>
@@ -262,7 +265,7 @@ namespace EPi.Libraries.Localization
             }
 
             List<PageData> children =
-                this.ContentRepository.Service.GetChildren<PageData>(container, new LanguageSelector(cultureInfo.Name))
+                this.ContentRepository.Service.GetChildren<PageData>(container, cultureInfo)
                     .ToList();
 
             foreach (PageData child in children)

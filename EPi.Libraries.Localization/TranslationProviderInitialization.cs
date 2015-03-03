@@ -34,9 +34,10 @@ using EPiServer.Events.Clients;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
+using EPiServer.Logging;
 using EPiServer.ServiceLocation;
 
-using log4net;
+
 
 namespace EPi.Libraries.Localization
 {
@@ -62,7 +63,7 @@ namespace EPi.Libraries.Localization
         ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationProviderInitialization" />
         ///     class.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TranslationProviderInitialization));
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationProviderInitialization));
 
         // Generate unique id for the raiser.
         private static readonly Guid TranslationProviderRaiserId = new Guid("cb4e20de-5dd3-48cd-b72a-0ecc3ce08cee");
@@ -166,7 +167,7 @@ namespace EPi.Libraries.Localization
                 return;
             }
 
-            Log.Info("[Localization] Initializing translation provider.");
+            Logger.Information("[Localization] Initializing translation provider.");
 
             // Initialize the provider after the initialization is complete, else the StartPage cannot be found.
             context.InitComplete += this.InitComplete;
@@ -184,21 +185,7 @@ namespace EPi.Libraries.Localization
 
             initialized = true;
 
-            Log.Info("[Localization] Translation provider initialized.");
-        }
-
-        /// <summary>
-        ///     Preloads the module.
-        /// </summary>
-        /// <param name="parameters">
-        ///     The parameters.
-        /// </param>
-        /// <remarks>
-        ///     This method is only available to be compatible with "AlwaysRunning" applications in .NET 4 / IIS 7.
-        ///     It currently serves no purpose.
-        /// </remarks>
-        public void Preload(string[] parameters)
-        {
+            Logger.Information("[Localization] Translation provider initialized.");
         }
 
         /// <summary>
@@ -236,11 +223,11 @@ namespace EPi.Libraries.Localization
                 return;
             }
 
-            Log.Info("[Localization] Uninitializing translation provider.");
+            Logger.Information("[Localization] Uninitializing translation provider.");
 
             initialized = this.UnLoadProvider(this.TranslationProvider);
 
-            Log.Info("[Localization] Translation provider uninitialized.");
+            Logger.Information("[Localization] Translation provider uninitialized.");
         }
 
         #endregion
@@ -273,7 +260,7 @@ namespace EPi.Libraries.Localization
             {
                 return null;
             }
-
+            
             // Gets any provider that has the same name as the one initialized.
             LocalizationProvider localizationProvider =
                 this.providerBasedLocalizationService.Providers.FirstOrDefault(
@@ -380,7 +367,7 @@ namespace EPi.Libraries.Localization
             }
             catch (NotSupportedException notSupportedException)
             {
-                Log.Error("[Localization] Error add provider to the Localization Service.", notSupportedException);
+                Logger.Error("[Localization] Error add provider to the Localization Service.", notSupportedException);
                 return false;
             }
 
@@ -408,7 +395,7 @@ namespace EPi.Libraries.Localization
 
             this.UpdateTranslations();
 
-            Log.Info("[Localization] Translations updated on other machine. Reloaded provider.");
+            Logger.Information("[Localization] Translations updated on other machine. Reloaded provider.");
         }
 
         /// <summary>
@@ -442,7 +429,7 @@ namespace EPi.Libraries.Localization
         {
             if (this.TranslationProvider == null)
             {
-                Log.Info("[Localization] No translation provider found. Translations were not updated.");
+                Logger.Information("[Localization] No translation provider found. Translations were not updated.");
                 return;
             }
 

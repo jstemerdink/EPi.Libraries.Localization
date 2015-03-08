@@ -20,5 +20,6 @@
   </metadata>
   <files>
     <file src="readme.txt" target="" />
+    <file src="translation-thumbnail.png" target="content\content\images" />
   </files>
 </package>

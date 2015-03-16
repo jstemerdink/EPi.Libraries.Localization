@@ -43,8 +43,9 @@ namespace EPi.Libraries.Localization.Models
     /// </summary>
     [ContentType(GUID = "{A691F851-6C6E-4C06-B62E-8FBC5A038A68}", AvailableInEditMode = true,
         Description = "Translation", DisplayName = "Translation", GroupName = "Localization")]
+    [ImageUrlAttribute("~/Content/images/translation-thumbnail.png")]
     [AvailableContentTypes(Exclude = new[] { typeof(PageData) })]
-    public class TranslationItem : PageData
+   public class TranslationItem : PageData
     {
         #region Public Properties
 

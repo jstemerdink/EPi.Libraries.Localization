@@ -42,9 +42,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPi.Libraries.UnitTests.Base, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="EPi.Libraries.UnitTests.Base, Version=2.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EPi.Libraries.UnitTests.Base.2.0.0.0\lib\net45\EPi.Libraries.UnitTests.Base.dll</HintPath>
+      <HintPath>..\packages\EPi.Libraries.UnitTests.Base.2.0.0.1\lib\net45\EPi.Libraries.UnitTests.Base.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer, Version=7.5.394.2, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

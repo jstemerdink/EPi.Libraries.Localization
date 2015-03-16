@@ -57,9 +57,6 @@ namespace EPi.Libraries.Localization.UnitTests.Specs
                 CmsContext.CreatePageType(typeof(TranslationItem));
                 CmsContext.CreatePageType(typeof(CategoryTranslationContainer));
 
-                //LanguageSelector masterLanguageSelector = new LanguageSelector(CmsContext.MasterLanguage.Name);
-                //LanguageSelector secondLanguageSelector = new LanguageSelector(CmsContext.SecondLanguage.Name);
-
                 CmsContext.CreateContent<StartPage>("StartPage", ContentReference.RootPage);
 
                 ContainerReference =

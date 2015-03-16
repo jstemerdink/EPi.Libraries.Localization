@@ -85,9 +85,8 @@ Adding a '''localization.bing.clientid''' and '''localization.bing.clientsecret'
 
 ## Requirements
 
-* EPiServer >= 7.7.1
-* log4net
-* .Net 4.0
+* EPiServer >= 8.0.0
+* .Net 4.5
 
 ## Deploy
 

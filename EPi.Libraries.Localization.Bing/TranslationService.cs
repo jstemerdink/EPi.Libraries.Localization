@@ -33,9 +33,9 @@ using System.Xml;
 
 using EPi.Libraries.Localization.Bing.Models;
 
+using EPiServer.Logging;
 using EPiServer.ServiceLocation;
 
-using log4net;
 
 namespace EPi.Libraries.Localization.Bing
 {
@@ -65,7 +65,7 @@ namespace EPi.Libraries.Localization.Bing
         /// <summary>
         ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationService" /> class.
         /// </summary>
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(TranslationService));
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationService));
 
         #endregion
 

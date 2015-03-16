@@ -1,4 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -21,21 +21,16 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-using log4net.Config;
-
 [assembly: AssemblyTitle("EPi.Libraries.Localization.Bing")]
-[assembly: AssemblyDescription("Provider for EPi.Libraries.Localization to create translations with Bing.")]
+[assembly: AssemblyDescription("Bing translation service for the custom localization provider")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
 [assembly: AssemblyProduct("EPi.Libraries.Localization.Bing")]
-[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2014")]
+[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -61,6 +56,5 @@ using log4net.Config;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: XmlConfigurator(Watch = true)]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

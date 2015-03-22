@@ -108,16 +108,7 @@ namespace EPi.Libraries.Localization.Models
         {
             get
             {
-                IEnumerable<CultureInfo> availableLanguages =
-                    this.LanguageBranchRepository.Service.ListEnabled().Select(p => p.Culture);
-
-                IEnumerable<TranslationItem> allLanguages =
-                    this.ContentRepository.Service.GetLanguageBranches<TranslationItem>(this.PageLink);
-
-                return new ReadOnlyCollection<string>(
-                    (from availableLanguage in availableLanguages
-                     where allLanguages.FirstOrDefault(p => p.Language.Equals(availableLanguage)) == null
-                     select availableLanguage.NativeName).ToList());
+                return TranslationFactory.Instance.GetMissingValues(this.PageLink);
             }
         }
 
@@ -151,14 +142,7 @@ namespace EPi.Libraries.Localization.Models
         {
             get
             {
-                IEnumerable<TranslationItem> allLanguages =
-                    this.ContentRepository.Service.GetLanguageBranches<TranslationItem>(this.PageLink);
-
-                return
-                    new Dictionary<string, string>(
-                        allLanguages.ToDictionary(
-                            languageVersion => new CultureInfo(languageVersion.LanguageID).NativeName,
-                            languageVersion => languageVersion.Translation));
+                return TranslationFactory.Instance.GetTranslatedValues(this.PageLink);
             }
         }
 

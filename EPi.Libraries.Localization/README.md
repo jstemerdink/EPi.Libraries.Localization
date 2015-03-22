@@ -1,4 +1,4 @@
-﻿# A custom localization provider for EPiServer 7.
+﻿# A custom localization provider for EPiServer 8.
 
 By Jeroen Stemerdink
 

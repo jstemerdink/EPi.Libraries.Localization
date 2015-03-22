@@ -1,4 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -38,8 +39,6 @@ using EPiServer.Logging;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 
-using LogManager = EPiServer.Logging.LogManager;
-
 namespace EPi.Libraries.Localization
 {
     /// <summary>
@@ -50,12 +49,72 @@ namespace EPi.Libraries.Localization
         #region Static Fields
 
         /// <summary>
-        ///     Initializes the <see cref="EPiServer.Logging.LogManager">LogManager</see> for the <see cref="TranslationFactory" /> class.
+        ///     Initializes the <see cref="EPiServer.Logging.LogManager">LogManager</see> for the <see cref="TranslationFactory" />
+        ///     class.
         /// </summary>
         private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationFactory));
-        
-        
+
         #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///     Prevents a default instance of the <see cref="TranslationFactory" /> class from being created.
+        /// </summary>
+        private TranslationFactory()
+        {
+            this.TranslationContainerReference = this.GetTranslationContainer();
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        ///     Sets the translation container.
+        /// </summary>
+        public void SetTranslationContainer()
+        {
+            this.TranslationContainerReference = this.GetTranslationContainer();
+        }
+
+        #endregion
+
+        /// <summary>
+        ///     Gets the missing values.
+        /// </summary>
+        /// <param name="pageReference">The page reference.</param>
+        /// <returns>ReadOnlyCollection&lt;System.String&gt;.</returns>
+        public ReadOnlyCollection<string> GetMissingValues(PageReference pageReference)
+        {
+            IEnumerable<CultureInfo> availableLanguages =
+                this.LanguageBranchRepository.Service.ListEnabled().Select(p => p.Culture);
+
+            IEnumerable<PageData> allLanguages =
+                this.ContentRepository.Service.GetLanguageBranches<PageData>(pageReference);
+
+            return new ReadOnlyCollection<string>(
+                (from availableLanguage in availableLanguages
+                 where allLanguages.FirstOrDefault(p => p.Language.Equals(availableLanguage)) == null
+                 select availableLanguage.NativeName).ToList());
+        }
+
+        /// <summary>
+        ///     Gets the translated values.
+        /// </summary>
+        /// <param name="pageReference">The page reference.</param>
+        /// <returns>Dictionary&lt;System.String, System.String&gt;.</returns>
+        public Dictionary<string, string> GetTranslatedValues(PageReference pageReference)
+        {
+            IEnumerable<TranslationItem> allLanguages =
+                this.ContentRepository.Service.GetLanguageBranches<TranslationItem>(pageReference);
+
+            return
+                new Dictionary<string, string>(
+                    allLanguages.ToDictionary(
+                        languageVersion => new CultureInfo(languageVersion.LanguageID).NativeName,
+                        languageVersion => languageVersion.Translation));
+        }
 
         #region Fields
 
@@ -76,20 +135,7 @@ namespace EPi.Libraries.Localization
 
         #endregion
 
-        #region Constructors and Destructors
-
-        /// <summary>
-        ///     Prevents a default instance of the <see cref="TranslationFactory" /> class from being created.
-        /// </summary>
-        private TranslationFactory()
-        {
-            this.TranslationContainerReference = this.GetTranslationContainer();
-        }
-
-        #endregion
-
         #region Public Properties
-
 
         /// <summary>
         ///     The synclock object.
@@ -97,7 +143,7 @@ namespace EPi.Libraries.Localization
         private static readonly object SyncLock = new object();
 
         /// <summary>
-        /// Gets the instance.
+        ///     Gets the instance.
         /// </summary>
         /// <value>The instance.</value>
         public static TranslationFactory Instance
@@ -180,18 +226,6 @@ namespace EPi.Libraries.Localization
 
         #endregion
 
-        #region Public Methods and Operators
-
-        /// <summary>
-        ///     Sets the translation container.
-        /// </summary>
-        public void SetTranslationContainer()
-        {
-            this.TranslationContainerReference = this.GetTranslationContainer();
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -264,9 +298,7 @@ namespace EPi.Libraries.Localization
             if (translationItem != null)
             {
                 TranslationItem languageItemVersion =
-                    this.ContentRepository.Service.CreateLanguageBranch<TranslationItem>(
-                        page.PageLink,
-                        language);
+                    this.ContentRepository.Service.CreateLanguageBranch<TranslationItem>(page.PageLink, language);
 
                 languageItemVersion.PageName = page.PageName;
                 languageItemVersion.URLSegment = page.URLSegment;
@@ -325,7 +357,6 @@ namespace EPi.Libraries.Localization
                 return containerPageReference;
             }
 
-            
             if (PageReference.IsNullOrEmpty(ContentReference.StartPage))
             {
                 return PageReference.EmptyReference;

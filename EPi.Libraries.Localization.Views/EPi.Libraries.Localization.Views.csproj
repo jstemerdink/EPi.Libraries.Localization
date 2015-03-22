@@ -219,8 +219,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="EPi.Libraries.Localization.Views.nuspec" />
-    <Content Include="EPiServer.Libraries.snk" />
-    <Content Include="README.md" />
+    <None Include="EPiServer.Libraries.snk" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

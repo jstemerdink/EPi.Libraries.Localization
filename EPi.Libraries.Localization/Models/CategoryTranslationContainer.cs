@@ -1,4 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -21,10 +21,14 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Collections.ObjectModel;
+
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Filters;
+
+using Newtonsoft.Json;
 
 namespace EPi.Libraries.Localization.Models
 {
@@ -37,10 +41,22 @@ namespace EPi.Libraries.Localization.Models
     [ContentType(GUID = "{F95F6943-4ED8-4080-A3C1-D1E903512DB0}", AvailableInEditMode = true,
         Description = "Container to hold translations for categories", DisplayName = "Categorie translation container",
         GroupName = "Localization")]
-    [ImageUrlAttribute("~/Content/images/translation-thumbnail.png")]
+    [ImageUrl("~/Content/images/translation-thumbnail.png")]
     [AvailableContentTypes(Include = new[] { typeof(TranslationItem), typeof(CategoryTranslationContainer) })]
     public class CategoryTranslationContainer : PageData
     {
+        /// <summary>
+        ///     Gets the missing translations for this item.
+        /// </summary>
+        [JsonIgnore]
+        public ReadOnlyCollection<string> MissingValues
+        {
+            get
+            {
+                return TranslationFactory.Instance.GetMissingValues(this.PageLink);
+            }
+        }
+
         #region Public Methods and Operators
 
         /// <summary>

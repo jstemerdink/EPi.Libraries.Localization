@@ -1,4 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
+﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
 // 
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -21,12 +21,15 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Filters;
+
+using Newtonsoft.Json;
 
 namespace EPi.Libraries.Localization.Models
 {
@@ -45,7 +48,7 @@ namespace EPi.Libraries.Localization.Models
     [ContentType(GUID = "{40393E0A-81EF-4B9A-B0AC-F883C036359D}", AvailableInEditMode = true,
         Description = "Container to hold translations", DisplayName = "Translation container",
         GroupName = "Localization")]
-    [ImageUrlAttribute("~/Content/images/translation-thumbnail.png")]
+    [ImageUrl("~/Content/images/translation-thumbnail.png")]
     [AvailableContentTypes(
         Include = new[] { typeof(TranslationItem), typeof(TranslationContainer), typeof(CategoryTranslationContainer) })
     ]
@@ -85,6 +88,18 @@ namespace EPi.Libraries.Localization.Models
         }
 
         #endregion
+
+        /// <summary>
+        ///     Gets the missing translations for this item.
+        /// </summary>
+        [JsonIgnore]
+        public ReadOnlyCollection<string> MissingValues
+        {
+            get
+            {
+                return TranslationFactory.Instance.GetMissingValues(this.PageLink);
+            }
+        }
 
         #region Public Methods and Operators
 

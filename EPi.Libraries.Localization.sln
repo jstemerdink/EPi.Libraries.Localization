@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization.UnitTests", "EPi.Libraries.Localization.UnitTests\EPi.Libraries.Localization.UnitTests.csproj", "{55496069-853B-47C8-B54F-DF8DFB4231F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization.Views", "EPi.Libraries.Localization.Views\EPi.Libraries.Localization.Views.csproj", "{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

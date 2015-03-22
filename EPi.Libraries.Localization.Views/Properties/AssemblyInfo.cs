@@ -25,15 +25,16 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("EPi.Libraries.Localization")]
-[assembly: AssemblyDescription("Library to create translations within an EPiServer site.")]
+[assembly: AssemblyTitle("EPi.Libraries.Localization.Views")]
+[assembly: AssemblyDescription("Views for translation items.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
-[assembly: AssemblyProduct("EPi.Libraries.Localization")]
+[assembly: AssemblyProduct("EPi.Libraries.Localization.Views")]
 [assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2015")]
 [assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
-[assembly: Guid("d6158e5e-1682-4753-9706-b26935a98ee8")]
-[assembly: AssemblyVersion("2.0.1.0")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: Guid("f3724a5f-25db-4d25-bcb0-ed9c1e2de00e")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

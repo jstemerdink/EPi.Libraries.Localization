@@ -21,19 +21,27 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Web.Mvc;
 
-[assembly: AssemblyTitle("EPi.Libraries.Localization")]
-[assembly: AssemblyDescription("Library to create translations within an EPiServer site.")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jeroen Stemerdink")]
-[assembly: AssemblyProduct("EPi.Libraries.Localization")]
-[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2015")]
-[assembly: AssemblyTrademark("")]
-[assembly: ComVisible(false)]
-[assembly: CLSCompliant(false)]
-[assembly: Guid("d6158e5e-1682-4753-9706-b26935a98ee8")]
-[assembly: AssemblyVersion("2.0.1.0")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+using EPi.Libraries.Localization.Models;
+
+using EPiServer.Web.Mvc;
+
+namespace EPi.Libraries.Localization.Views.Controllers
+{
+    /// <summary>
+    ///     Class CategoryTranslationContainerController.
+    /// </summary>
+    public class CategoryTranslationContainerController : PageController<CategoryTranslationContainer>
+    {
+        /// <summary>
+        ///     The default view.
+        /// </summary>
+        /// <param name="currentPage">The current page.</param>
+        /// <returns>ActionResult.</returns>
+        public ActionResult Index(CategoryTranslationContainer currentPage)
+        {
+            return this.PartialView(currentPage);
+        }
+    }
+}

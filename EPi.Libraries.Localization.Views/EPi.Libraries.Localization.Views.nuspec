@@ -6,20 +6,17 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <projectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization/tree/master/EPi.Libraries.Localization.Bing</projectUrl>
+    <projectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization/tree/master/EPi.Libraries.Localization.Views</projectUrl>
     <iconUrl>http://jstemerdink.net/images/js-nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Upgraded for EPiServer 8</releaseNotes>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright © Jeroen Stemerdink 2014</copyright>
-    <tags>localization provider plugin</tags>
+    <tags>localization provider</tags>
     <dependencies>
       <dependency id="EPiServer.CMS.Core" version="[8.0.0, 9.0)" />
       <dependency id="EPiServer.CMS.UI.Core" version="[8.0.0, 9.0)" />
-      <dependency id="EPi.Libraries.Localization" version="[2.0.0.0, 3.0)" />
+      <dependency id="EPi.Libraries.Localization" version="[2.0.1.0, 3.0)" />
     </dependencies>
   </metadata>
-  <files>
-    <file src="web.config.install.xdt" target="content" />
-  </files>
 </package>

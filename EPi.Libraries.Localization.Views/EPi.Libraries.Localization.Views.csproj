@@ -211,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.config" />
+    <Content Include="license.txt" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{9C1BA615-DD1C-4597-94B1-0BD249A43D91}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization.Bing", "EPi.Libraries.Localization.Bing\EPi.Libraries.Localization.Bing.csproj", "{EAE8D2BF-A3A6-4418-B49D-5FA5484D3BA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization", "EPi.Libraries.Localization\EPi.Libraries.Localization.csproj", "{4750AA22-03A8-48CB-A78E-32AE161C8C67}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization.UnitTests", "EPi.Libraries.Localization.UnitTests\EPi.Libraries.Localization.UnitTests.csproj", "{55496069-853B-47C8-B54F-DF8DFB4231F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Localization.Views", "EPi.Libraries.Localization.Views\EPi.Libraries.Localization.Views.csproj", "{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{4750AA22-03A8-48CB-A78E-32AE161C8C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4750AA22-03A8-48CB-A78E-32AE161C8C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4750AA22-03A8-48CB-A78E-32AE161C8C67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55496069-853B-47C8-B54F-DF8DFB4231F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2230992-8E5E-436B-9A1B-4F8FA1971E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU

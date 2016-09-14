@@ -1,5 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
-// 
+﻿// Copyright © 2016 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -8,10 +7,8 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
-// 
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -20,35 +17,32 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-using EPiServer;
-using EPiServer.Core;
-using EPiServer.DataAbstraction;
-using EPiServer.DataAnnotations;
-using EPiServer.ServiceLocation;
-
-using Newtonsoft.Json;
-
 namespace EPi.Libraries.Localization.Models
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using EPiServer;
+    using EPiServer.Core;
+    using EPiServer.DataAbstraction;
+    using EPiServer.DataAnnotations;
+    using EPiServer.ServiceLocation;
+
+    using Newtonsoft.Json;
+
     /// <summary>
     ///     The translation PageType.
     /// </summary>
     [ContentType(GUID = "{A691F851-6C6E-4C06-B62E-8FBC5A038A68}", AvailableInEditMode = true,
         Description = "Translation", DisplayName = "Translation", GroupName = "Localization")]
-    [ImageUrlAttribute("~/Content/images/translation-thumbnail.png")]
+    [ImageUrl("~/Content/images/translation-thumbnail.png")]
     [AvailableContentTypes(Exclude = new[] { typeof(PageData) })]
-   public class TranslationItem : PageData
+    public class TranslationItem : PageData
     {
-        #region Public Properties
-
         /// <summary>
         ///     Gets the lookup key this item.
         /// </summary>
@@ -76,9 +70,14 @@ namespace EPi.Libraries.Localization.Models
                 }
 
                 // Use the masterlanguage branch, that one is always available.
-                TranslationItem masterLanguagePage = this.ContentRepository.Service.Get<TranslationItem>(
+                TranslationItem masterLanguagePage;
+
+                if (!this.ContentRepository.Service.TryGet(
                     this.PageLink,
-                    this.MasterLanguage);
+                    this.MasterLanguage, out masterLanguagePage))
+                {
+                    return "-";
+                }
 
                 // Get the ancestors
                 IEnumerable<IContent> ancestors =
@@ -155,10 +154,6 @@ namespace EPi.Libraries.Localization.Models
         [Required(AllowEmptyStrings = false)]
         public virtual string Translation { get; set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         ///     Gets or sets the content repository.
         /// </summary>
@@ -170,10 +165,6 @@ namespace EPi.Libraries.Localization.Models
         /// </summary>
         /// <value>The language branch repository.</value>
         protected Injected<ILanguageBranchRepository> LanguageBranchRepository { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         ///     Sets the default property values on the page data.
@@ -191,7 +182,5 @@ namespace EPi.Libraries.Localization.Models
 
             this.VisibleInMenu = false;
         }
-
-        #endregion
     }
 }

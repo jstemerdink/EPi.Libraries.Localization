@@ -10,11 +10,11 @@
     <iconUrl>http://jstemerdink.net/images/js-nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Upgraded for EPiServer 10</releaseNotes>
+    <releaseNotes>Updated to work with EPiServer 10.</releaseNotes>
     <copyright>Copyright © Jeroen Stemerdink 2016</copyright>
     <tags>localization provider</tags>
     <dependencies>
-      <dependency id="EPi.Libraries.Localization" version="[4.0.0.0, 5.0)" />
+      <dependency id="EPi.Libraries.Localization" version="[4.0.0, 5.0)" />
     </dependencies>
   </metadata>
 </package>

@@ -1,5 +1,5 @@
-﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
-// 
+﻿// Copyright© 2016 Jeroen Stemerdink. All Rights Reserved.
+//
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -8,10 +8,10 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -276,9 +276,17 @@ namespace EPi.Libraries.Localization
         /// <returns><c>true</c> if the specified self has attribute; otherwise, <c>false</c>.</returns>
         private static bool HasAttribute<T>(PropertyInfo propertyInfo) where T : Attribute
         {
-            T attr = (T)Attribute.GetCustomAttribute(propertyInfo, typeof(T));
+            try
+            {
+                T attr = (T)Attribute.GetCustomAttribute(propertyInfo, typeof(T));
+                return attr != null;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error("[Localization] Error checking attribute.", exception);
+            }
 
-            return attr != null;
+            return false;
         }
 
         private void CreateLanguageBranch(PageData page, CultureInfo language)
@@ -357,12 +365,17 @@ namespace EPi.Libraries.Localization
                 return containerPageReference;
             }
 
-            if (PageReference.IsNullOrEmpty(ContentReference.StartPage))
+            if (ContentReference.IsNullOrEmpty(ContentReference.StartPage))
             {
-                return PageReference.EmptyReference;
+                return ContentReference.EmptyReference;
             }
 
-            ContentData startPageData = this.ContentRepository.Service.Get<ContentData>(ContentReference.StartPage);
+            ContentData startPageData;
+
+            if (!this.ContentRepository.Service.TryGet(ContentReference.StartPage, out startPageData))
+            {
+                return ContentReference.EmptyReference;
+            }
 
             PropertyInfo translationContainerProperty = GetTranslationContainerProperty(startPageData);
 
@@ -377,8 +390,7 @@ namespace EPi.Libraries.Localization
             if (containerPageReference == null)
             {
                 containerPageReference =
-                    this.ContentRepository.Service.Get<ContentData>(ContentReference.StartPage)
-                        .GetPropertyValue("TranslationContainer", ContentReference.StartPage);
+                    startPageData.GetPropertyValue("TranslationContainer", ContentReference.StartPage);
             }
 
             if (containerPageReference != ContentReference.StartPage)
@@ -400,7 +412,7 @@ namespace EPi.Libraries.Localization
 
             Logger.Information("[Localization] First translation container under StartPage used.");
 
-            containerPageReference = containerReference.PageLink;
+            containerPageReference = containerReference.ContentLink;
 
             return containerPageReference;
         }

@@ -1,5 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
-// 
+﻿// Copyright © 2016 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -8,10 +7,8 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
-// 
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -20,33 +17,29 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Web;
-using System.Xml;
-
-using EPi.Libraries.Localization.Bing.Models;
-
-using EPiServer.Logging;
-using EPiServer.ServiceLocation;
-
-
 namespace EPi.Libraries.Localization.Bing
 {
+    using System;
+    using System.Configuration;
+    using System.Globalization;
+    using System.IO;
+    using System.Net;
+    using System.Runtime.Serialization.Json;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using EPi.Libraries.Localization.Bing.Models;
+
+    using EPiServer.Logging;
+    using EPiServer.ServiceLocation;
+
     /// <summary>
     ///     Class TranslationService.
     /// </summary>
     [ServiceConfiguration(typeof(ITranslationService))]
     public class TranslationService : ITranslationService
     {
-        #region Constants
-
         /// <summary>
         ///     The url to Bing authentication
         /// </summary>
@@ -58,18 +51,10 @@ namespace EPi.Libraries.Localization.Bing
         private const string TranslatorUri =
             "http://api.microsofttranslator.com/v2/Http.svc/Translate?text={0}&from={1}&to={2}";
 
-        #endregion
-
-        #region Static Fields
-
         /// <summary>
         ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationService" /> class.
         /// </summary>
         private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationService));
-
-        #endregion
-
-        #region Fields
 
         /// <summary>
         ///     The bing access token
@@ -85,10 +70,6 @@ namespace EPi.Libraries.Localization.Bing
         ///     The bing client secret
         /// </summary>
         private string bingClientSecret;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         ///     Gets the Bing access token.
@@ -128,10 +109,6 @@ namespace EPi.Libraries.Localization.Bing
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         ///     Translates the specified text.
         /// </summary>
@@ -141,11 +118,9 @@ namespace EPi.Libraries.Localization.Bing
         /// <returns>System.String.</returns>
         public string Translate(string toBeTranslated, string fromLang, string toLang)
         {
-            if (this.BingAccessToken == null || string.IsNullOrWhiteSpace(this.BingAccessToken.access_token))
+            if ((this.BingAccessToken == null) || string.IsNullOrWhiteSpace(this.BingAccessToken.access_token))
             {
-
                 return null;
-
             }
 
             string headerValue = string.Format(
@@ -201,10 +176,6 @@ namespace EPi.Libraries.Localization.Bing
             }
         }
 
-        #endregion
-
-        #region Methods
-
         private BingAccessToken GetAccesToken()
         {
             if (string.IsNullOrWhiteSpace(this.BingClientID) | string.IsNullOrWhiteSpace(this.BingClientSecret))
@@ -253,7 +224,5 @@ namespace EPi.Libraries.Localization.Bing
                 return null;
             }
         }
-
-        #endregion
     }
 }

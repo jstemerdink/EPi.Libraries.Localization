@@ -1,5 +1,4 @@
-﻿// Copyright© 2014 Jeroen Stemerdink. All Rights Reserved.
-// 
+﻿// Copyright © 2016 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -8,10 +7,8 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
-// 
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -20,27 +17,25 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Collections.Specialized;
-using System.Linq;
-
-using EPi.Libraries.Localization.Models;
-
-using EPiServer;
-using EPiServer.Core;
-using EPiServer.Events;
-using EPiServer.Events.Clients;
-using EPiServer.Framework;
-using EPiServer.Framework.Initialization;
-using EPiServer.Framework.Localization;
-using EPiServer.Logging;
-using EPiServer.ServiceLocation;
-
-
-
 namespace EPi.Libraries.Localization
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Linq;
+
+    using EPi.Libraries.Localization.Models;
+
+    using EPiServer;
+    using EPiServer.Core;
+    using EPiServer.Events;
+    using EPiServer.Events.Clients;
+    using EPiServer.Events.Internal;
+    using EPiServer.Framework;
+    using EPiServer.Framework.Initialization;
+    using EPiServer.Framework.Localization;
+    using EPiServer.Logging;
+    using EPiServer.ServiceLocation;
+
     /// <summary>
     ///     The initialization module for the translation provider.
     /// </summary>
@@ -48,16 +43,10 @@ namespace EPi.Libraries.Localization
     [ModuleDependency(typeof(FrameworkInitialization))]
     public class TranslationProviderInitialization : IInitializableModule
     {
-        #region Constants
-
         /// <summary>
         ///     The provider name.
         /// </summary>
         private const string ProviderName = "Translations";
-
-        #endregion
-
-        #region Static Fields
 
         /// <summary>
         ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationProviderInitialization" />
@@ -76,10 +65,6 @@ namespace EPi.Libraries.Localization
         /// </summary>
         private static bool initialized;
 
-        #endregion
-
-        #region Fields
-
         /// <summary>
         ///     The provider based localization service
         /// </summary>
@@ -89,10 +74,6 @@ namespace EPi.Libraries.Localization
         ///     The translation provider
         /// </summary>
         private TranslationProvider translationProvider;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the content events.
@@ -137,10 +118,6 @@ namespace EPi.Libraries.Localization
                 return this.translationProvider ?? (this.translationProvider = this.GetTranslationProvider());
             }
         }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         ///     Initializes this instance.
@@ -230,10 +207,6 @@ namespace EPi.Libraries.Localization
             Logger.Information("[Localization] Translation provider uninitialized.");
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     Run when initialization is complete.
         /// </summary>
@@ -260,7 +233,7 @@ namespace EPi.Libraries.Localization
             {
                 return null;
             }
-            
+
             // Gets any provider that has the same name as the one initialized.
             LocalizationProvider localizationProvider =
                 this.providerBasedLocalizationService.Providers.FirstOrDefault(
@@ -338,12 +311,12 @@ namespace EPi.Libraries.Localization
                 return false;
             }
 
-            // This config value could tell the provider where to find the translations, 
+            // This config value could tell the provider where to find the translations,
             // set to 0 though, will be looked up after initialization in the provider itself.
             NameValueCollection configValues = new NameValueCollection { { "containerid", "0" } };
 
             TranslationProvider temporaryTranslationProvider = null;
-            TranslationProvider localizationProvider;
+            TranslationProvider localizationProvider = null;
 
             try
             {
@@ -351,6 +324,10 @@ namespace EPi.Libraries.Localization
                 temporaryTranslationProvider.Initialize(ProviderName, configValues);
                 localizationProvider = temporaryTranslationProvider;
                 temporaryTranslationProvider = null;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error("[Localization] Error inititializing the provider.", exception);
             }
             finally
             {
@@ -360,6 +337,11 @@ namespace EPi.Libraries.Localization
                 }
             }
 
+            if (localizationProvider == null)
+            {
+                return false;
+            }
+
             // Add it at the end of the list of providers.
             try
             {
@@ -367,7 +349,7 @@ namespace EPi.Libraries.Localization
             }
             catch (NotSupportedException notSupportedException)
             {
-                Logger.Error("[Localization] Error add provider to the Localization Service.", notSupportedException);
+                Logger.Error("[Localization] Error adding the provider to the Localization Service.", notSupportedException);
                 return false;
             }
 
@@ -433,9 +415,14 @@ namespace EPi.Libraries.Localization
                 return;
             }
 
-            this.TranslationProvider.UpdateTranslations();
+            try
+            {
+                this.TranslationProvider.UpdateTranslations();
+            }
+            catch (Exception exception)
+            {
+                Logger.Error("[Localization] Error updating translations.", exception);
+            }
         }
-
-        #endregion
     }
 }

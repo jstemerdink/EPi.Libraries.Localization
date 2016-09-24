@@ -1,5 +1,4 @@
-﻿// Copyright© 2015 Jeroen Stemerdink. All Rights Reserved.
-// 
+﻿// Copyright © 2016 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -8,10 +7,8 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
-// 
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -20,19 +17,18 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-
-using EPiServer.Core;
-using EPiServer.DataAbstraction;
-using EPiServer.DataAnnotations;
-using EPiServer.Filters;
-
-using Newtonsoft.Json;
-
 namespace EPi.Libraries.Localization.Models
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+
+    using EPiServer.Core;
+    using EPiServer.DataAbstraction;
+    using EPiServer.DataAnnotations;
+    using EPiServer.Filters;
+
+    using Newtonsoft.Json;
+
     /// <summary>
     ///     A container to hold translations.
     /// </summary>
@@ -54,8 +50,6 @@ namespace EPi.Libraries.Localization.Models
     ]
     public class TranslationContainer : PageData
     {
-        #region Public Properties
-
         /// <summary>
         ///     Gets or sets the container name.
         /// </summary>
@@ -81,13 +75,12 @@ namespace EPi.Libraries.Localization.Models
                 // Use explicitly set container name, otherwise fall back to page name
                 return !string.IsNullOrWhiteSpace(containerName) ? containerName : this.PageName;
             }
+
             set
             {
                 this.SetPropertyValue(p => p.ContainerName, value);
             }
         }
-
-        #endregion
 
         /// <summary>
         ///     Gets the missing translations for this item.
@@ -100,8 +93,6 @@ namespace EPi.Libraries.Localization.Models
                 return TranslationFactory.Instance.GetMissingValues(this.PageLink);
             }
         }
-
-        #region Public Methods and Operators
 
         /// <summary>
         ///     Sets the default property values on the page data.
@@ -116,7 +107,5 @@ namespace EPi.Libraries.Localization.Models
             this[MetaDataProperties.PageChildOrderRule] = FilterSortOrder.Alphabetical;
             this.VisibleInMenu = false;
         }
-
-        #endregion
     }
 }

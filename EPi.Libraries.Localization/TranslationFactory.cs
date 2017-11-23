@@ -112,7 +112,7 @@ namespace EPi.Libraries.Localization
             return
                 new Dictionary<string, string>(
                     allLanguages.ToDictionary(
-                        languageVersion => new CultureInfo(languageVersion.LanguageID).NativeName,
+                        languageVersion => languageVersion.Language.NativeName,
                         languageVersion => languageVersion.Translation));
         }
 
@@ -313,8 +313,8 @@ namespace EPi.Libraries.Localization
 
                 string translatedText = this.TranslationService.Translate(
                     translationItem.OriginalText,
-                    page.LanguageID.Split(new char['-'])[0],
-                    languageItemVersion.LanguageID.Split(new char['-'])[0]);
+                    page.Language.Name.Split(new char['-'])[0],
+                    languageItemVersion.Language.Name.Split(new char['-'])[0]);
 
                 if (string.IsNullOrWhiteSpace(translatedText))
                 {

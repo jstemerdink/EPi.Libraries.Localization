@@ -234,9 +234,10 @@ namespace EPi.Libraries.Localization
                 return null;
             }
 
+            
             // Gets any provider that has the same name as the one initialized.
             LocalizationProvider localizationProvider =
-                this.providerBasedLocalizationService.Providers.FirstOrDefault(
+                this.providerBasedLocalizationService.ProviderList.FirstOrDefault(
                     p => p.Name.Equals(ProviderName, StringComparison.Ordinal));
 
             return localizationProvider as TranslationProvider;
@@ -304,6 +305,7 @@ namespace EPi.Libraries.Localization
         /// <returns>
         ///     [true] if the provider has been loaded.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "The correct pattern has been implemented.")]
         private bool LoadProvider()
         {
             if (this.ProviderBasedLocalizationService == null)
@@ -345,7 +347,7 @@ namespace EPi.Libraries.Localization
             // Add it at the end of the list of providers.
             try
             {
-                this.ProviderBasedLocalizationService.Providers.Add(localizationProvider);
+                this.ProviderBasedLocalizationService.AddProvider(localizationProvider);
             }
             catch (NotSupportedException notSupportedException)
             {
@@ -399,7 +401,7 @@ namespace EPi.Libraries.Localization
             }
 
             // If found, remove it.
-            this.ProviderBasedLocalizationService.Providers.Remove(localizationProvider);
+            this.ProviderBasedLocalizationService.RemoveProvider(localizationProvider.Name);
 
             return false;
         }

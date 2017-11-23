@@ -4,17 +4,17 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <authors>Jeroen Stemerdink</authors>
+    <owners>Jeroen Stemerdink</owners>
     <projectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization/tree/master/EPi.Libraries.Localization.Bing</projectUrl>
     <iconUrl>http://jstemerdink.net/images/js-nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>Updated to work with EPiServer 10.</releaseNotes>
-    <copyright>Copyright © Jeroen Stemerdink 2016</copyright>
+    <description>Bing translation service for the custom localization provider.</description>
+    <releaseNotes>Updated to work with EPiServer 11.</releaseNotes>
+    <copyright>Copyright © Jeroen Stemerdink 2017</copyright>
     <tags>localization provider plugin</tags>
     <dependencies>
-      <dependency id="EPi.Libraries.Localization" version="[4.0.0, 5.0)" />
+      <dependency id="EPi.Libraries.Localization" version="5.0" />
     </dependencies>
   </metadata>
   <files>

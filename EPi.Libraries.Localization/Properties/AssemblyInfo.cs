@@ -1,4 +1,4 @@
-﻿// Copyright © 2016 Jeroen Stemerdink.
+﻿// Copyright © 2017 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeroen Stemerdink")]
 [assembly: AssemblyProduct("EPi.Libraries.Localization")]
-[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2016")]
+[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]

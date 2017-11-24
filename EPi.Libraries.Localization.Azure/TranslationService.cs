@@ -1,4 +1,4 @@
-﻿// Copyright © 2016 Jeroen Stemerdink.
+﻿// Copyright © 2017 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -24,9 +24,7 @@ namespace EPi.Libraries.Localization.Azure
     using System.Globalization;
     using System.IO;
     using System.Net;
-    using System.Net.Http;
     using System.Text;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Xml;
 
@@ -114,50 +112,6 @@ namespace EPi.Libraries.Localization.Azure
             {
                 Logger.Error("[Localization] Error getting translations from Azure", exception);
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// Translates the request.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>The translate task.</returns>
-        private static async Task<HttpResponseMessage> TranslateRequestAsync(string url)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add(OcpApimSubscriptionKeyHeader, AzureSubscriptionKey);
-                return await client.GetAsync(url).ConfigureAwait(true);
-            }
-        }
-
-        /// <summary>
-        /// translate as an asynchronous operation.
-        /// </summary>
-        /// <param name="toBeTranslated">To be translated.</param>
-        /// <param name="fromLang">From language.</param>
-        /// <param name="toLang">To language.</param>
-        /// <returns>The translation Task.</returns>
-        private static async Task TranslateAsync(string toBeTranslated, string fromLang, string toLang)
-        {
-            try
-            {
-                HttpResponseMessage translateResponse = await TranslateRequestAsync(string.Format(CultureInfo.InvariantCulture, TranslateUrlTemplate, HttpUtility.UrlEncode(toBeTranslated), fromLang, toLang, "generalnn")).ConfigureAwait(true);
-
-                string translateResponseContent = await translateResponse.Content.ReadAsStringAsync().ConfigureAwait(true);
-
-                if (translateResponse.IsSuccessStatusCode)
-                {
-                    Logger.Debug("[Localization] Translation result: {0}", translateResponseContent);
-                }
-                else
-                {
-                    Logger.Error("[Localization] Failed to translate. Response: {0}", translateResponseContent);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("[Localization] Failed to translate. Exception: {0}", ex.Message);
             }
         }
     }

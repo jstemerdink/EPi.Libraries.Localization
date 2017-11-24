@@ -1,0 +1,7 @@
+﻿<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <appSettings xdt:Transform="InsertIfMissing" />
+  
+  <appSettings>
+    <add key="localization.azure.subscriptionkey" value="" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+  </appSettings>
+</configuration>

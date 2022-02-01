@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Jeroen Stemerdink.
+﻿// Copyright © 2022 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -31,6 +31,9 @@ namespace EPi.Libraries.Localization.Azure
     using EPiServer.Logging;
     using EPiServer.ServiceLocation;
 
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     ///     Class TranslationService.
     /// </summary>
@@ -49,29 +52,37 @@ namespace EPi.Libraries.Localization.Azure
         private const string TranslateUrlTemplate = "http://api.microsofttranslator.com/v2/http.svc/translate?text={0}&from={1}&to={2}&category={3}";
 
         /// <summary>
-        ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationService" /> class.
+        ///     Initializes the <see cref="ILogger{T}">LogManager</see> for the <see cref="TranslationService" /> class.
         /// </summary>
-        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationService));
+        private readonly ILogger<TranslationService> logger;
+
+        private readonly IConfiguration configuration;
+
+        public TranslationService(IConfiguration configuration, ILogger<TranslationService> logger)
+        {
+            this.configuration = configuration;
+            this.logger = logger;
+        }
 
         /// <summary>
         /// The azure subscription key
         /// </summary>
-        private static string azureSubscriptionKey;
+        private string azureSubscriptionKey;
 
         /// <summary>
         /// Gets the azure subscription key.
         /// </summary>
         /// <value>The azure subscription key.</value>
-        public static string AzureSubscriptionKey
+        public string AzureSubscriptionKey
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(azureSubscriptionKey))
+                if (!string.IsNullOrWhiteSpace(this.azureSubscriptionKey))
                 {
-                    return azureSubscriptionKey;
+                    return this.azureSubscriptionKey;
                 }
 
-                return azureSubscriptionKey = ConfigurationManager.AppSettings["localization.azure.subscriptionkey"];
+                return this.azureSubscriptionKey = this.configuration["Localization:AzureSubscriptionKey"];
             }
         }
 
@@ -89,7 +100,7 @@ namespace EPi.Libraries.Localization.Azure
                 Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, TranslateUrlTemplate, HttpUtility.UrlEncode(toBeTranslated), fromLang, toLang, "generalnn"));
 
                 WebRequest translationWebRequest = WebRequest.Create(uri);
-                translationWebRequest.Headers.Add(OcpApimSubscriptionKeyHeader, AzureSubscriptionKey);
+                translationWebRequest.Headers.Add(OcpApimSubscriptionKeyHeader, this.AzureSubscriptionKey);
 
                 using (WebResponse response = translationWebRequest.GetResponse())
                 {
@@ -110,7 +121,7 @@ namespace EPi.Libraries.Localization.Azure
             }
             catch (Exception exception)
             {
-                Logger.Error("[Localization] Error getting translations from Azure", exception);
+                this.logger.LogError("[Localization] Error getting translations from Azure", exception);
                 return null;
             }
         }

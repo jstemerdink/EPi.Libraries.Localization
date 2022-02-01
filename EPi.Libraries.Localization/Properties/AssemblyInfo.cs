@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Jeroen Stemerdink.
+﻿// Copyright © 2022 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -21,13 +21,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("EPi.Libraries.Localization")]
-[assembly: AssemblyDescription("Library to create translations within an EPiServer site.")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jeroen Stemerdink")]
-[assembly: AssemblyProduct("EPi.Libraries.Localization")]
-[assembly: AssemblyCopyright("Copyright © Jeroen Stemerdink 2017")]
-[assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
 [assembly: Guid("d6158e5e-1682-4753-9706-b26935a98ee8")]

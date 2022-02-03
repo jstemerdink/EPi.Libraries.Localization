@@ -344,7 +344,7 @@ namespace EPi.Libraries.Localization
             }
             catch (Exception exception)
             {
-                this.Logger.LogError("[Localization] Error inititializing the provider.", exception);
+                this.Logger.LogError(exception, "[Localization] Error inititializing the provider.");
             }
             finally
             {
@@ -366,7 +366,7 @@ namespace EPi.Libraries.Localization
             }
             catch (NotSupportedException notSupportedException)
             {
-                this.Logger.LogError("[Localization] Error adding the provider to the Localization Service.", notSupportedException);
+                this.Logger.LogError(notSupportedException, "[Localization] Error adding the provider to the Localization Service.");
                 return false;
             }
 
@@ -438,7 +438,7 @@ namespace EPi.Libraries.Localization
             }
             catch (Exception exception)
             {
-                this.Logger.LogError("[Localization] Error updating translations.", exception);
+                this.Logger.LogError(exception, "[Localization] Error updating translations.");
             }
         }
     }

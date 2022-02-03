@@ -153,3 +153,5 @@ $RECYCLE.BIN/
 
 /.vs/config/applicationhost.config
 .vs/
+EPi.Libraries.Localization.Azure/modules/
+EPi.Libraries.Localization/modules/

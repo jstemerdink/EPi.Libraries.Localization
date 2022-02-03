@@ -136,7 +136,7 @@ namespace EPi.Libraries.Localization
         }
 
         /// <summary>
-        ///     Gets or sets the translation service.
+        ///     Gets the translation service.
         /// </summary>
         /// <value>The translation service.</value>
         private ITranslationService TranslationService
@@ -396,7 +396,7 @@ namespace EPi.Libraries.Localization
             }
             catch (Exception exception)
             {
-                this.Logger.Service.LogError("[Localization] Error checking attribute.", exception);
+                this.Logger.Service.LogError(exception, "[Localization] Error checking attribute.");
             }
 
             return false;

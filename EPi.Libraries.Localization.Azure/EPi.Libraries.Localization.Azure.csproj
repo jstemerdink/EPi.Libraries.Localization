@@ -27,6 +27,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>localization;provider;plugin</PackageTags>
     <PackageReleaseNotes>Updated for CMS12</PackageReleaseNotes>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
     <None Update="README.md">
@@ -34,6 +35,12 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+	<ItemGroup>
+		<None Update="license.txt">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPi.Libraries.Localization\EPi.Libraries.Localization.csproj" />
   </ItemGroup>

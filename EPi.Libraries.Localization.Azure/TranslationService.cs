@@ -81,7 +81,7 @@ namespace EPi.Libraries.Localization.Azure
                     keyFromConfig = Endpoint;
                 }
 
-                return this.azureRegion = keyFromConfig;
+                return this.azureEndpoint = keyFromConfig;
             }
         }
 

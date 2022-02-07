@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Jeroen Stemerdink.
+﻿// Copyright © 2022 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -17,19 +17,20 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 namespace EPi.Libraries.Localization.Azure
 {
     using System;
-    using System.Configuration;
-    using System.Globalization;
-    using System.IO;
-    using System.Net;
+    using System.Net.Http;
     using System.Text;
-    using System.Web;
-    using System.Xml;
 
-    using EPiServer.Logging;
     using EPiServer.ServiceLocation;
+    using EPiServer.Shell.Configuration;
+
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+
+    using Newtonsoft.Json;
 
     /// <summary>
     ///     Class TranslationService.
@@ -37,41 +38,99 @@ namespace EPi.Libraries.Localization.Azure
     [ServiceConfiguration(typeof(ITranslationService))]
     public class TranslationService : ITranslationService
     {
+        private const string Endpoint = "https://api.cognitive.microsofttranslator.com/";
+
+        private const string GlobalRegion = "global";
+
+        private readonly IConfiguration configuration;
 
         /// <summary>
-        /// Header name used to pass the subscription key to translation service
+        ///     Initializes the <see cref="ILogger{T}">LogManager</see> for the <see cref="TranslationService" /> class.
         /// </summary>
-        private const string OcpApimSubscriptionKeyHeader = "Ocp-Apim-Subscription-Key";
+        private readonly ILogger<TranslationService> logger;
+
+        private string azureEndpoint;
+
+        private string azureRegion;
+
+        private string azureSubscriptionKey;
+
+        public TranslationService(IConfiguration configuration, ILogger<TranslationService> logger)
+        {
+            this.configuration = configuration;
+            this.logger = logger;
+        }
 
         /// <summary>
-        /// The translate URL template
+        /// Gets the azure endpoint.
         /// </summary>
-        private const string TranslateUrlTemplate = "http://api.microsofttranslator.com/v2/http.svc/translate?text={0}&from={1}&to={2}&category={3}";
+        /// <value>The azure endpoint.</value>
+        public string AzureEndpoint
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(value: this.azureEndpoint))
+                {
+                    return this.azureEndpoint;
+                }
 
-        /// <summary>
-        ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationService" /> class.
-        /// </summary>
-        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationService));
+                string keyFromConfig = this.configuration["Localization:AzureEndpoint"];
 
-        /// <summary>
-        /// The azure subscription key
-        /// </summary>
-        private static string azureSubscriptionKey;
+                if (string.IsNullOrWhiteSpace(value: keyFromConfig))
+                {
+                    keyFromConfig = Endpoint;
+                }
+
+                return this.azureEndpoint = keyFromConfig;
+            }
+        }
 
         /// <summary>
         /// Gets the azure subscription key.
         /// </summary>
         /// <value>The azure subscription key.</value>
-        public static string AzureSubscriptionKey
+        public string AzureRegion
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(azureSubscriptionKey))
+                if (!string.IsNullOrWhiteSpace(value: this.azureRegion))
                 {
-                    return azureSubscriptionKey;
+                    return this.azureRegion;
                 }
 
-                return azureSubscriptionKey = ConfigurationManager.AppSettings["localization.azure.subscriptionkey"];
+                string keyFromConfig = this.configuration["Localization:AzureRegion"];
+
+                if (string.IsNullOrWhiteSpace(value: keyFromConfig))
+                {
+                    keyFromConfig = GlobalRegion;
+                }
+
+                return this.azureRegion = keyFromConfig;
+            }
+        }
+
+        /// <summary>
+        /// Gets the azure subscription key.
+        /// </summary>
+        /// <value>The azure subscription key.</value>
+        /// <exception cref="MissingConfigurationException" accessor="get">No subscription key found for Azure translations</exception>
+        public string AzureSubscriptionKey
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(value: this.azureSubscriptionKey))
+                {
+                    return this.azureSubscriptionKey;
+                }
+
+                string keyFromConfig = this.configuration["Localization:AzureSubscriptionKey"];
+
+                if (string.IsNullOrWhiteSpace(value: keyFromConfig))
+                {
+                    throw new MissingConfigurationException("No subscription key found for Azure translations in appsettings.json. See readme");
+                }
+
+                return this.azureSubscriptionKey = keyFromConfig;
             }
         }
 
@@ -86,31 +145,53 @@ namespace EPi.Libraries.Localization.Azure
         {
             try
             {
-                Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, TranslateUrlTemplate, HttpUtility.UrlEncode(toBeTranslated), fromLang, toLang, "generalnn"));
+                string route = $"/translate?api-version=3.0&from={fromLang}&to={toLang}";
 
-                WebRequest translationWebRequest = WebRequest.Create(uri);
-                translationWebRequest.Headers.Add(OcpApimSubscriptionKeyHeader, AzureSubscriptionKey);
+                object[] body = { new { Text = toBeTranslated } };
+                string requestBody = JsonConvert.SerializeObject(value: body);
 
-                using (WebResponse response = translationWebRequest.GetResponse())
+                using (HttpClient client = new HttpClient())
+                using (HttpRequestMessage request = new HttpRequestMessage())
                 {
-                    Stream stream = response.GetResponseStream();
+                    // Build the request.
+                    request.Method = HttpMethod.Post;
+                    request.RequestUri = new Uri(Endpoint + route);
+                    request.Content = new StringContent(
+                        content: requestBody,
+                        encoding: Encoding.UTF8,
+                        "application/json");
 
-                    if (stream == null)
+                    request.Headers.Add("Ocp-Apim-Subscription-Key", value: this.AzureSubscriptionKey);
+
+                    if (!this.AzureRegion.Equals(value: GlobalRegion))
                     {
-                        return null;
+                        request.Headers.Add("Ocp-Apim-Subscription-Region", value: this.AzureRegion);
                     }
 
-                    using (StreamReader translatedStream = new StreamReader(stream, Encoding.UTF8))
+                    // Send the request and get response.
+                    HttpResponseMessage response = client.Send(request: request);
+
+                    // Read response as a string.
+                    string result = response.Content.ReadAsStringAsync().Result;
+
+                    this.logger.LogInformation($"[Localization] Returned result: {result} .");
+
+                    if (!string.IsNullOrWhiteSpace(value: result))
                     {
-                        XmlDocument xTranslation = new XmlDocument();
-                        xTranslation.LoadXml(translatedStream.ReadToEnd());
-                        return xTranslation.InnerText;
+                        TranslationResult[] deserializedOutput =
+                            JsonConvert.DeserializeObject<TranslationResult[]>(value: result);
+
+                        return deserializedOutput[0].Translations[0].Text;
                     }
+
+                    this.logger.LogInformation("[Localization] Getting translations from Azure returned empty result.");
+
+                    return null;
                 }
             }
             catch (Exception exception)
             {
-                Logger.Error("[Localization] Error getting translations from Azure", exception);
+                this.logger.LogError(exception: exception, "[Localization] Error getting translations from Azure");
                 return null;
             }
         }

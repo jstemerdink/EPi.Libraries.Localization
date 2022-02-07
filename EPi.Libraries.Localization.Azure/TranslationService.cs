@@ -127,7 +127,7 @@ namespace EPi.Libraries.Localization.Azure
 
                 if (string.IsNullOrWhiteSpace(value: keyFromConfig))
                 {
-                    throw new MissingConfigurationException("No subscription key found for Azure translations");
+                    throw new MissingConfigurationException("No subscription key found for Azure translations in appsettings.json. See readme");
                 }
 
                 return this.azureSubscriptionKey = keyFromConfig;

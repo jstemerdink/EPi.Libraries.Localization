@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -36,11 +36,12 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Product>EPi.Libraries.Localization</Product>
 		<PackageId>EPi.Libraries.Localization</PackageId>
-		<PackageTags>localization;provider</PackageTags>
+		<PackageTags>localization;provider;EPiServerModulePackage</PackageTags>
 		<PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>
 		<RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Update="license.txt">

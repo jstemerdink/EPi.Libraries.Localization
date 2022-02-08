@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Jeroen Stemerdink.
+﻿// Copyright © 2022 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -44,7 +44,7 @@ namespace EPi.Libraries.Localization.Models
     [ContentType(GUID = "{40393E0A-81EF-4B9A-B0AC-F883C036359D}", AvailableInEditMode = true,
         Description = "Container to hold translations", DisplayName = "Translation container",
         GroupName = "Localization")]
-    [ImageUrl("~/Content/images/translation-thumbnail.png")]
+    [ImageUrl("~/icons/cms/pages/translation-thumbnail.png")]
     [AvailableContentTypes(
         Include = new[] { typeof(TranslationItem), typeof(TranslationContainer), typeof(CategoryTranslationContainer) })
     ]

@@ -21,102 +21,41 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-
-using EPi.Libraries.Localization.DataAnnotations;
-using EPi.Libraries.Localization.Models;
-
-using EPiServer;
-using EPiServer.Core;
-using EPiServer.DataAbstraction;
-using EPiServer.DataAccess;
-using EPiServer.Logging;
-using EPiServer.Security;
-using EPiServer.ServiceLocation;
-
 namespace EPi.Libraries.Localization
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+
+    using EPi.Libraries.Localization.DataAnnotations;
+    using EPi.Libraries.Localization.Models;
+
+    using EPiServer;
+    using EPiServer.Core;
+    using EPiServer.DataAbstraction;
+    using EPiServer.DataAccess;
+    using EPiServer.Security;
+    using EPiServer.ServiceLocation;
+
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     ///     The TranslationFactory class, used for translation queries.
     /// </summary>
     public sealed class TranslationFactory
     {
-        #region Static Fields
+        /// <summary>
+        ///     The synclock object.
+        /// </summary>
+        private static readonly object SyncLock = new object();
 
         /// <summary>
-        ///     Initializes the <see cref="EPiServer.Logging.LogManager">LogManager</see> for the <see cref="TranslationFactory" />
-        ///     class.
+        ///     The one and only TranslationFactory instance.
         /// </summary>
-        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationFactory));
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        /// <summary>
-        ///     Prevents a default instance of the <see cref="TranslationFactory" /> class from being created.
-        /// </summary>
-        private TranslationFactory()
-        {
-            this.TranslationContainerReference = this.GetTranslationContainer();
-        }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        /// <summary>
-        ///     Sets the translation container.
-        /// </summary>
-        public void SetTranslationContainer()
-        {
-            this.TranslationContainerReference = this.GetTranslationContainer();
-        }
-
-        #endregion
-
-        /// <summary>
-        ///     Gets the missing values.
-        /// </summary>
-        /// <param name="pageReference">The page reference.</param>
-        /// <returns>ReadOnlyCollection&lt;System.String&gt;.</returns>
-        public ReadOnlyCollection<string> GetMissingValues(PageReference pageReference)
-        {
-            IEnumerable<CultureInfo> availableLanguages =
-                this.LanguageBranchRepository.Service.ListEnabled().Select(p => p.Culture);
-
-            IEnumerable<PageData> allLanguages =
-                this.ContentRepository.Service.GetLanguageBranches<PageData>(pageReference);
-
-            return new ReadOnlyCollection<string>(
-                (from availableLanguage in availableLanguages
-                 where allLanguages.FirstOrDefault(p => p.Language.Equals(availableLanguage)) == null
-                 select availableLanguage.NativeName).ToList());
-        }
-
-        /// <summary>
-        ///     Gets the translated values.
-        /// </summary>
-        /// <param name="pageReference">The page reference.</param>
-        /// <returns>Dictionary&lt;System.String, System.String&gt;.</returns>
-        public Dictionary<string, string> GetTranslatedValues(PageReference pageReference)
-        {
-            IEnumerable<TranslationItem> allLanguages =
-                this.ContentRepository.Service.GetLanguageBranches<TranslationItem>(pageReference);
-
-            return
-                new Dictionary<string, string>(
-                    allLanguages.ToDictionary(
-                        languageVersion => languageVersion.Language.NativeName,
-                        languageVersion => languageVersion.Translation));
-        }
-
-        #region Fields
+        private static volatile TranslationFactory instance;
 
         /// <summary>
         ///     The translation service
@@ -129,18 +68,12 @@ namespace EPi.Libraries.Localization
         private bool? translationServiceActivated;
 
         /// <summary>
-        ///     The one and only TranslationFactory instance.
+        ///     Prevents a default instance of the <see cref="TranslationFactory" /> class from being created.
         /// </summary>
-        private static volatile TranslationFactory instance;
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        ///     The synclock object.
-        /// </summary>
-        private static readonly object SyncLock = new object();
+        private TranslationFactory()
+        {
+            this.TranslationContainerReference = this.GetTranslationContainer();
+        }
 
         /// <summary>
         ///     Gets the instance.
@@ -174,6 +107,10 @@ namespace EPi.Libraries.Localization
         /// <value>The content repository.</value>
         public Injected<IContentRepository> ContentRepository { get; set; }
 
+        /// <summary>Gets or sets the logger.</summary>
+        /// <value>The logger.</value>
+        public Injected<ILogger<TranslationFactory>> Logger { get; set; }
+
         /// <summary>
         ///     Gets or sets the language branch repository.
         /// </summary>
@@ -184,10 +121,6 @@ namespace EPi.Libraries.Localization
         ///     Gets the reference to the translation container.
         /// </summary>
         public ContentReference TranslationContainerReference { get; private set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets a value indicating whether [a translation service is activated].
@@ -203,7 +136,7 @@ namespace EPi.Libraries.Localization
         }
 
         /// <summary>
-        ///     Gets or sets the translation service.
+        ///     Gets the translation service.
         /// </summary>
         /// <value>The translation service.</value>
         private ITranslationService TranslationService
@@ -217,16 +150,59 @@ namespace EPi.Libraries.Localization
                 }
                 catch (ActivationException activationException)
                 {
-                    Logger.Information("[Localization] No translation service available", activationException);
+                    this.Logger.Service.LogInformation("[Localization] No translation service available", activationException);
+                }
+                catch (InvalidOperationException invalidOperationException)
+                {
+                    this.Logger.Service.LogInformation("[Localization] No translation service available", invalidOperationException);
                 }
 
                 return null;
             }
         }
 
-        #endregion
+        /// <summary>
+        ///     Gets the missing values.
+        /// </summary>
+        /// <param name="pageReference">The page reference.</param>
+        /// <returns> A ReadOnlyCollection{System.String}.</returns>
+        public ReadOnlyCollection<string> GetMissingValues(PageReference pageReference)
+        {
+            IEnumerable<CultureInfo> availableLanguages =
+                this.LanguageBranchRepository.Service.ListEnabled().Select(p => p.Culture);
 
-        #region Methods
+            IEnumerable<PageData> allLanguages =
+                this.ContentRepository.Service.GetLanguageBranches<PageData>(contentLink: pageReference);
+
+            return new ReadOnlyCollection<string>(
+                (from availableLanguage in availableLanguages
+                 where allLanguages.FirstOrDefault(p => p.Language.Equals(value: availableLanguage)) == null
+                 select availableLanguage.NativeName).ToList());
+        }
+
+        /// <summary>
+        ///     Gets the translated values.
+        /// </summary>
+        /// <param name="pageReference">The page reference.</param>
+        /// <returns>Dictionary&lt;System.String, System.String&gt;.</returns>
+        public Dictionary<string, string> GetTranslatedValues(PageReference pageReference)
+        {
+            IEnumerable<TranslationItem> allLanguages =
+                this.ContentRepository.Service.GetLanguageBranches<TranslationItem>(contentLink: pageReference);
+
+            return new Dictionary<string, string>(
+                allLanguages.ToDictionary(
+                    languageVersion => languageVersion.Language.NativeName,
+                    languageVersion => languageVersion.Translation));
+        }
+
+        /// <summary>
+        ///     Sets the translation container.
+        /// </summary>
+        public void SetTranslationContainer()
+        {
+            this.TranslationContainerReference = this.GetTranslationContainer();
+        }
 
         /// <summary>
         ///     Translates them all.
@@ -248,53 +224,18 @@ namespace EPi.Libraries.Localization
 
             List<LanguageBranch> enabledLanguages = this.LanguageBranchRepository.Service.ListEnabled().ToList();
 
-            foreach (LanguageBranch languageBranch in
-                enabledLanguages.Where(lb => !lb.Culture.Equals(page.Language)))
+            foreach (LanguageBranch languageBranch in enabledLanguages.Where(
+                         lb => !lb.Culture.Equals(value: page.Language)))
             {
-                this.CreateLanguageBranch(page, languageBranch.Culture);
+                this.CreateLanguageBranch(page: page, language: languageBranch.Culture);
             }
-        }
-
-        /// <summary>
-        ///     Gets the name of the translation container property.
-        /// </summary>
-        /// <param name="page">The page.</param>
-        /// <returns>System.Reflection.PropertyInfo</returns>
-        private static PropertyInfo GetTranslationContainerProperty(ContentData page)
-        {
-            PropertyInfo translationContainerProperty =
-                page.GetType().GetProperties().Where(HasAttribute<TranslationContainerAttribute>).FirstOrDefault();
-
-            return translationContainerProperty;
-        }
-
-        /// <summary>
-        ///     Determines whether the specified self has attribute.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyInfo">The propertyInfo.</param>
-        /// <returns><c>true</c> if the specified self has attribute; otherwise, <c>false</c>.</returns>
-        private static bool HasAttribute<T>(PropertyInfo propertyInfo) where T : Attribute
-        {
-            try
-            {
-                T attr = (T)Attribute.GetCustomAttribute(propertyInfo, typeof(T));
-                return attr != null;
-            }
-            catch (Exception exception)
-            {
-                Logger.Error("[Localization] Error checking attribute.", exception);
-            }
-
-            return false;
         }
 
         private void CreateLanguageBranch(PageData page, CultureInfo language)
         {
             // Check if language already exists
-            bool languageExists =
-                this.ContentRepository.Service.GetLanguageBranches<PageData>(page.PageLink)
-                    .Any(p => p.Language.Equals(language));
+            bool languageExists = this.ContentRepository.Service
+                .GetLanguageBranches<PageData>(contentLink: page.PageLink).Any(p => p.Language.Equals(value: language));
 
             if (languageExists)
             {
@@ -306,38 +247,46 @@ namespace EPi.Libraries.Localization
             if (translationItem != null)
             {
                 TranslationItem languageItemVersion =
-                    this.ContentRepository.Service.CreateLanguageBranch<TranslationItem>(page.PageLink, language);
+                    this.ContentRepository.Service.CreateLanguageBranch<TranslationItem>(
+                        contentLink: page.PageLink,
+                        language: language);
 
                 languageItemVersion.PageName = page.PageName;
                 languageItemVersion.URLSegment = page.URLSegment;
 
                 string translatedText = this.TranslationService.Translate(
-                    translationItem.OriginalText,
+                    toBeTranslated: translationItem.OriginalText,
                     page.Language.Name.Split(new char['-'])[0],
                     languageItemVersion.Language.Name.Split(new char['-'])[0]);
 
-                if (string.IsNullOrWhiteSpace(translatedText))
+                if (string.IsNullOrWhiteSpace(value: translatedText))
                 {
                     return;
                 }
 
                 languageItemVersion.Translation = translatedText;
 
-                if (!string.IsNullOrWhiteSpace(languageItemVersion.Translation))
+                if (!string.IsNullOrWhiteSpace(value: languageItemVersion.Translation))
                 {
-                    this.ContentRepository.Service.Save(languageItemVersion, SaveAction.Publish, AccessLevel.NoAccess);
+                    this.ContentRepository.Service.Save(
+                        content: languageItemVersion,
+                        action: SaveAction.Publish,
+                        access: AccessLevel.NoAccess);
                 }
             }
             else
             {
                 PageData languageVersion = this.ContentRepository.Service.CreateLanguageBranch<PageData>(
-                    page.PageLink,
-                    language);
+                    contentLink: page.PageLink,
+                    language: language);
 
                 languageVersion.PageName = page.PageName;
                 languageVersion.URLSegment = page.URLSegment;
 
-                this.ContentRepository.Service.Save(languageVersion, SaveAction.Publish, AccessLevel.NoAccess);
+                this.ContentRepository.Service.Save(
+                    content: languageVersion,
+                    action: SaveAction.Publish,
+                    access: AccessLevel.NoAccess);
             }
         }
 
@@ -352,45 +301,47 @@ namespace EPi.Libraries.Localization
             ContentReference containerPageReference = null;
 
             // For a multi site setup there is no other option but to have a global container under the root.
-            TranslationContainer containerReference =
-                this.ContentRepository.Service.GetChildren<TranslationContainer>(ContentReference.RootPage)
-                    .FirstOrDefault();
+            TranslationContainer containerReference = this.ContentRepository.Service
+                .GetChildren<TranslationContainer>(contentLink: ContentReference.RootPage).FirstOrDefault();
 
             if (containerReference != null)
             {
-                Logger.Information("[Localization] First translation container under RootPage used.");
+                this.Logger.Service.LogInformation("[Localization] First translation container under RootPage used.");
 
-                containerPageReference = containerReference.PageLink;
+                containerPageReference = containerReference.ContentLink;
 
                 return containerPageReference;
             }
 
-            if (ContentReference.IsNullOrEmpty(ContentReference.StartPage))
+            if (ContentReference.IsNullOrEmpty(contentLink: ContentReference.StartPage))
             {
                 return ContentReference.EmptyReference;
             }
 
             ContentData startPageData;
 
-            if (!this.ContentRepository.Service.TryGet(ContentReference.StartPage, out startPageData))
+            if (!this.ContentRepository.Service.TryGet(
+                    contentLink: ContentReference.StartPage,
+                    content: out startPageData))
             {
                 return ContentReference.EmptyReference;
             }
 
-            PropertyInfo translationContainerProperty = GetTranslationContainerProperty(startPageData);
+            PropertyInfo translationContainerProperty = this.GetTranslationContainerProperty(page: startPageData);
 
             if (translationContainerProperty != null
                 && translationContainerProperty.PropertyType == typeof(PageReference))
             {
                 containerPageReference = startPageData.GetPropertyValue(
-                    translationContainerProperty.Name,
-                    ContentReference.StartPage);
+                    propertyName: translationContainerProperty.Name,
+                    defaultValue: ContentReference.StartPage);
             }
 
             if (containerPageReference == null)
             {
-                containerPageReference =
-                    startPageData.GetPropertyValue("TranslationContainer", ContentReference.StartPage);
+                containerPageReference = startPageData.GetPropertyValue(
+                    "TranslationContainer",
+                    defaultValue: ContentReference.StartPage);
             }
 
             if (containerPageReference != ContentReference.StartPage)
@@ -398,25 +349,57 @@ namespace EPi.Libraries.Localization
                 return containerPageReference;
             }
 
-            Logger.Information("[Localization] No translation container specified.");
+            this.Logger.Service.LogInformation("[Localization] No translation container specified.");
 
-            containerReference =
-                this.ContentRepository.Service.GetChildren<TranslationContainer>(containerPageReference)
-                    .FirstOrDefault();
+            containerReference = this.ContentRepository.Service
+                .GetChildren<TranslationContainer>(contentLink: containerPageReference).FirstOrDefault();
 
             if (containerReference == null)
             {
-                Logger.Information("[Localization] No translation container found.");
+                this.Logger.Service.LogInformation("[Localization] No translation container found.");
                 return containerPageReference;
             }
 
-            Logger.Information("[Localization] First translation container under StartPage used.");
+            this.Logger.Service.LogInformation("[Localization] First translation container under StartPage used.");
 
             containerPageReference = containerReference.ContentLink;
 
             return containerPageReference;
         }
 
-        #endregion
+        /// <summary>
+        ///     Gets the name of the translation container property.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns>System.Reflection.PropertyInfo</returns>
+        private PropertyInfo GetTranslationContainerProperty(ContentData page)
+        {
+            PropertyInfo translationContainerProperty = page.GetType().GetProperties()
+                .Where(predicate: this.HasAttribute<TranslationContainerAttribute>).FirstOrDefault();
+
+            return translationContainerProperty;
+        }
+
+        /// <summary>
+        ///     Determines whether the specified self has attribute.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyInfo">The propertyInfo.</param>
+        /// <returns><c>true</c> if the specified self has attribute; otherwise, <c>false</c>.</returns>
+        private bool HasAttribute<T>(PropertyInfo propertyInfo)
+            where T : Attribute
+        {
+            try
+            {
+                T attr = (T)Attribute.GetCustomAttribute(element: propertyInfo, typeof(T));
+                return attr != null;
+            }
+            catch (Exception exception)
+            {
+                this.Logger.Service.LogError(exception, "[Localization] Error checking attribute.");
+            }
+
+            return false;
+        }
     }
 }

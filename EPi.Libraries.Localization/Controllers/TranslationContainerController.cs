@@ -1,4 +1,4 @@
-﻿// Copyright © 2022 Jeroen Stemerdink.
+﻿// Copyright © 2017 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -17,10 +17,30 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
+namespace EPi.Libraries.Localization.Controllers
+{
+    using EPi.Libraries.Localization.Models;
 
-[assembly: ComVisible(false)]
-[assembly: CLSCompliant(false)]
-[assembly: Guid("d6158e5e-1682-4753-9706-b26935a98ee8")]
+    using EPiServer.Web;
+    using EPiServer.Web.Mvc;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    /// <summary>
+    ///     Class TranslationContainerController.
+    /// </summary>
+    public class TranslationContainerController : PageController<TranslationContainer>
+    {
+        /// <summary>
+        ///     The default view.
+        /// </summary>
+        /// <param name="currentPage">The current page.</param>
+        /// <returns>The ActionResult.</returns>
+        public ActionResult Index(TranslationContainer currentPage)
+        {
+            return this.PartialView(this.CreateViewPath(nameof(Index)), currentPage);
+        }
+
+        private string CreateViewPath(string action) => UriUtil.Combine("/CmsUIViews/Views/TranslationContainer/", action + ".cshtml");
+    }
+}

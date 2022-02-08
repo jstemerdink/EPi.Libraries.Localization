@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Jeroen Stemerdink.
+﻿// Copyright © 2022 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -33,8 +33,9 @@ namespace EPi.Libraries.Localization
     using EPiServer.Framework;
     using EPiServer.Framework.Initialization;
     using EPiServer.Framework.Localization;
-    using EPiServer.Logging;
     using EPiServer.ServiceLocation;
+
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     ///     The initialization module for the translation provider.
@@ -47,12 +48,6 @@ namespace EPi.Libraries.Localization
         ///     The provider name.
         /// </summary>
         private const string ProviderName = "Translations";
-
-        /// <summary>
-        ///     Initializes the <see cref="LogManager">LogManager</see> for the <see cref="TranslationProviderInitialization" />
-        ///     class.
-        /// </summary>
-        private static readonly ILogger Logger = LogManager.GetLogger(typeof(TranslationProviderInitialization));
 
         // Generate unique id for the raiser.
         private static readonly Guid TranslationProviderRaiserId = new Guid("cb4e20de-5dd3-48cd-b72a-0ecc3ce08cee");
@@ -79,19 +74,32 @@ namespace EPi.Libraries.Localization
         ///     Gets or sets the content events.
         /// </summary>
         /// <value>The content events.</value>
-        protected Injected<IContentEvents> ContentEvents { get; set; }
+        protected IContentEvents ContentEvents { get; set; }
 
         /// <summary>
         ///     Gets or sets the event service.
         /// </summary>
         /// <value>The event service.</value>
-        protected Injected<IEventRegistry> EventService { get; set; }
+        protected IEventRegistry EventService { get; set; }
 
         /// <summary>
         ///     Gets or sets the provider based localization service.
         /// </summary>
         /// <value>The provider based localization service.</value>
-        protected Injected<LocalizationService> LocalizationService { get; set; }
+        protected LocalizationService LocalizationService { get; set; }
+       
+        /// <summary>
+        ///     The <see cref="ILogger{T}">LogManager</see> for the <see cref="TranslationProviderInitialization" />
+        ///     class.
+        /// </summary>
+        protected ILogger<TranslationProviderInitialization> Logger { get; set; }
+
+        /////// <summary>Initializes a new instance of the <see cref="T:EPi.Libraries.Localization.TranslationProviderInitialization" /> class.</summary>
+        /////// <param name="logger">The logger.</param>
+        ////public TranslationProviderInitialization(ILogger<TranslationProviderInitialization> logger)
+        ////{
+        ////    this.logger = logger;
+        ////}
 
         /// <summary>
         ///     Gets or sets the provider based localization service.
@@ -103,7 +111,7 @@ namespace EPi.Libraries.Localization
             {
                 return this.providerBasedLocalizationService
                        ?? (this.providerBasedLocalizationService =
-                           this.LocalizationService.Service as ProviderBasedLocalizationService);
+                           this.LocalizationService as ProviderBasedLocalizationService);
             }
         }
 
@@ -144,25 +152,33 @@ namespace EPi.Libraries.Localization
                 return;
             }
 
-            Logger.Information("[Localization] Initializing translation provider.");
+            ILoggerFactory loggerFactory = context.Locate.Advanced.GetInstance<ILoggerFactory>();
+            this.Logger = loggerFactory.CreateLogger<TranslationProviderInitialization>();
+
+            this.Logger.LogInformation("[Localization] Initializing translation provider.");
+
+            this.ContentEvents = context.Locate.Advanced.GetInstance<IContentEvents>();
+            this.EventService = context.Locate.Advanced.GetInstance<IEventRegistry>();
+            this.LocalizationService = context.Locate.Advanced.GetInstance<LocalizationService>();
+            
 
             // Initialize the provider after the initialization is complete, else the StartPage cannot be found.
             context.InitComplete += this.InitComplete;
 
-            this.ContentEvents.Service.PublishedContent += this.InstancePublishedContent;
-            this.ContentEvents.Service.MovedContent += this.InstanceChangedContent;
-            this.ContentEvents.Service.DeletedContent += this.InstanceChangedContent;
+            this.ContentEvents.PublishedContent += this.InstancePublishedContent;
+            this.ContentEvents.MovedContent += this.InstanceChangedContent;
+            this.ContentEvents.DeletedContent += this.InstanceChangedContent;
 
             // Make sure the RemoteCacheSynchronization event is registered before the custome event.
-            this.EventService.Service.Get(RemoteCacheSynchronization.RemoveFromCacheEventId);
+            this.EventService.Get(RemoteCacheSynchronization.RemoveFromCacheEventId);
 
             // Attach a custom event to update the translations when translations are updated, eg. in LoadBalanced environments.
-            Event translationsUpdated = this.EventService.Service.Get(TranslationsUpdatedEventId);
+            Event translationsUpdated = this.EventService.Get(TranslationsUpdatedEventId);
             translationsUpdated.Raised += this.TranslationsUpdatedEventRaised;
 
             initialized = true;
 
-            Logger.Information("[Localization] Translation provider initialized.");
+            this.Logger.LogInformation("[Localization] Translation provider initialized.");
         }
 
         /// <summary>
@@ -200,11 +216,11 @@ namespace EPi.Libraries.Localization
                 return;
             }
 
-            Logger.Information("[Localization] Uninitializing translation provider.");
+            this.Logger.LogInformation("[Localization] Uninitializing translation provider.");
 
             initialized = this.UnLoadProvider(this.TranslationProvider);
 
-            Logger.Information("[Localization] Translation provider uninitialized.");
+            this.Logger.LogInformation("[Localization] Translation provider uninitialized.");
         }
 
         /// <summary>
@@ -233,7 +249,6 @@ namespace EPi.Libraries.Localization
             {
                 return null;
             }
-
             
             // Gets any provider that has the same name as the one initialized.
             LocalizationProvider localizationProvider =
@@ -329,7 +344,7 @@ namespace EPi.Libraries.Localization
             }
             catch (Exception exception)
             {
-                Logger.Error("[Localization] Error inititializing the provider.", exception);
+                this.Logger.LogError(exception, "[Localization] Error inititializing the provider.");
             }
             finally
             {
@@ -351,7 +366,7 @@ namespace EPi.Libraries.Localization
             }
             catch (NotSupportedException notSupportedException)
             {
-                Logger.Error("[Localization] Error adding the provider to the Localization Service.", notSupportedException);
+                this.Logger.LogError(notSupportedException, "[Localization] Error adding the provider to the Localization Service.");
                 return false;
             }
 
@@ -361,7 +376,7 @@ namespace EPi.Libraries.Localization
         private void RaiseEvent(string message)
         {
             // Raise the TranslationsUpdated event.
-            this.EventService.Service.Get(TranslationsUpdatedEventId).Raise(TranslationProviderRaiserId, message);
+            this.EventService.Get(TranslationsUpdatedEventId).Raise(TranslationProviderRaiserId, message);
         }
 
         /// <summary>
@@ -379,7 +394,7 @@ namespace EPi.Libraries.Localization
 
             this.UpdateTranslations();
 
-            Logger.Information("[Localization] Translations updated on other machine. Reloaded provider.");
+            this.Logger.LogInformation("[Localization] Translations updated on other machine. Reloaded provider.");
         }
 
         /// <summary>
@@ -413,7 +428,7 @@ namespace EPi.Libraries.Localization
         {
             if (this.TranslationProvider == null)
             {
-                Logger.Information("[Localization] No translation provider found. Translations were not updated.");
+                this.Logger.LogInformation("[Localization] No translation provider found. Translations were not updated.");
                 return;
             }
 
@@ -423,7 +438,7 @@ namespace EPi.Libraries.Localization
             }
             catch (Exception exception)
             {
-                Logger.Error("[Localization] Error updating translations.", exception);
+                this.Logger.LogError(exception, "[Localization] Error updating translations.");
             }
         }
     }

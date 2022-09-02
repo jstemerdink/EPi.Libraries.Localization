@@ -10,7 +10,7 @@ init:
   - set JAVA_HOME=C:\Program Files\Java\jdk15
 install:
 - choco install gitversion.portable -y
-- cmd: nuget sources add -Name EPiServerFeed -Source http://nuget.episerver.com/feed/packages.svc/
+- cmd: nuget sources add -Name EPiServerFeed -Source https://nuget.episerver.com/feed/packages.svc/
 - cmd: nuget sources add -Name EPiServerBetaFeed -Source https://www.myget.org/F/cmscore/api/v2
 before_build:
 - cmd: nuget restore
@@ -18,7 +18,7 @@ before_build:
 build_script:
   - dotnet tool install --global dotnet-sonarscanner
   - dotnet sonarscanner begin /k:"jstemerdink:EPi.Libraries.Localization" /n:"EPi.Libraries.Localization" /d:"sonar.host.url=https://sonarcloud.io" /o:"jstemerdink-github" /d:"sonar.login=0b0eec6902ab7d776899f79bfeff15d313dd6e09"
-  - dotnet pack "EPi.Libraries.Localization.sln" /p:AssemblyVersion=%GitVersion_AssemblySemVer%;FileVersion=%GitVersion_AssemblySemFileVer%;ProductVersion=%GitVersion_MajorMinorPatch%;PackageVersion=%GitVersion_NuGetVersion%
+  - dotnet pack "EPi.Libraries.Localization.sln" /p:Version=%GitVersion_MajorMinorPatch%;AssemblyVersion=%GitVersion_AssemblySemVer%;FileVersion=%GitVersion_AssemblySemFileVer%;ProductVersion=%GitVersion_MajorMinorPatch%;PackageVersion=%GitVersion_NuGetVersion%
   - dotnet sonarscanner end /d:"sonar.login=0b0eec6902ab7d776899f79bfeff15d313dd6e09"
 after_build:
 - cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\EPi.Libraries.Localization.%GitVersion_NuGetVersion%.nupkg"

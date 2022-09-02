@@ -26,7 +26,7 @@
 		<AssemblyOriginatorKeyFile>EPiServer.Libraries.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
@@ -59,7 +59,7 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EPiServer.CMS" Version="12.0.2" />
+		<PackageReference Include="EPiServer.CMS" Version="12.8.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="README.md">
@@ -70,7 +70,7 @@
 	<ItemGroup>
 		<None Update="EPi.Libraries.Localization.targets">
 			<Pack>True</Pack>
-			<PackagePath>build\net5.0\</PackagePath>
+			<PackagePath>build\net6.0\</PackagePath>
 		</None>
 	</ItemGroup>
 	<ItemGroup>

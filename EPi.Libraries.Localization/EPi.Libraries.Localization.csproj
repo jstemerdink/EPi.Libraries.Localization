@@ -68,12 +68,18 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EPiServer.CMS" Version="12.3.1" />
+		<PackageReference Include="EPiServer.CMS" Version="12.4.0" />
 	</ItemGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<None Update="EPi.Libraries.Localization.targets">
 			<Pack>True</Pack>
 			<PackagePath>build\net5.0\</PackagePath>
+		</None>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<None Update="EPi.Libraries.Localization.targets">
+			<Pack>True</Pack>
+			<PackagePath>build\net6.0\</PackagePath>
 		</None>
 	</ItemGroup>
 	<ItemGroup>

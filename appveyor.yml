@@ -21,8 +21,8 @@ build_script:
   - dotnet pack "EPi.Libraries.Localization.sln" /p:AssemblyVersion=%GitVersion_AssemblySemVer%;FileVersion=%GitVersion_AssemblySemFileVer%;ProductVersion=%GitVersion_MajorMinorPatch%;PackageVersion=%GitVersion_NuGetVersion%
   - dotnet sonarscanner end /d:"sonar.login=0b0eec6902ab7d776899f79bfeff15d313dd6e09"
 after_build:
-- cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\EPi.Libraries.Localization.%GitVersion_NuGetVersion%.nupkg"
-- cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.nupkg"
+- cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\EPi.Libraries.Localization.%GitVersion_MajorMinorPatch%.nupkg"
+- cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\EPi.Libraries.Localization.Azure.%GitVersion_MajorMinorPatch%.nupkg"
 #- cmd: appveyor PushArtifact "EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.nupkg"
 - 7z a EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\net5.0\*  %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\net6.0\*
 - cmd: appveyor PushArtifact "EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip"

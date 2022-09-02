@@ -27,7 +27,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
 		<Description>Library to create translations within an EPiServer site.</Description>
@@ -36,7 +36,6 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Product>EPi.Libraries.Localization</Product>
 		<PackageId>EPi.Libraries.Localization</PackageId>
-		<PackageVersion>6.1.0</PackageVersion>
 		<PackageTags>localization;provider;EPiServerModulePackage</PackageTags>
 		<PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>

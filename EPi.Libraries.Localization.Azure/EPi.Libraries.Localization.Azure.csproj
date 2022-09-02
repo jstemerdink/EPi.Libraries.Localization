@@ -14,14 +14,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <Authors>Jeroen Stemerdink</Authors>
     <Company>Jeroen Stemerdink</Company>
     <Product>EPi.Libraries.Localization.Azure</Product>
 	  <PackageId>EPi.Libraries.Localization.Azure</PackageId>
-	  <PackageVersion>6.1.0</PackageVersion>
-    <Description>Azure translation service for the custom localization provider</Description>
+	  <Description>Azure translation service for the custom localization provider</Description>
     <Copyright>Copyright © Jeroen Stemerdink 2022</Copyright>
     <PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>

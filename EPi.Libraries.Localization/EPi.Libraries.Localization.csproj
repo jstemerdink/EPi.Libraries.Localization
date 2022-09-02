@@ -43,6 +43,18 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="README.md" />
 	</ItemGroup>

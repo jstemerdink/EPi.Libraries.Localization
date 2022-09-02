@@ -9,12 +9,13 @@ init:
   - set JAVA_HOME_11_X64=C:\Program Files\Java\jdk15
   - set JAVA_HOME=C:\Program Files\Java\jdk15
 install:
-- choco install gitversion.portable -y
+#- choco install gitversion.portable -y
+- ps: dotnet tool install --global GitVersion.Tool --version 5.*
 - cmd: nuget sources add -Name EPiServerFeed -Source https://nuget.episerver.com/feed/packages.svc/
 - cmd: nuget sources add -Name EPiServerBetaFeed -Source https://www.myget.org/F/cmscore/api/v2
 before_build:
 - cmd: nuget restore
-- ps: gitversion /l console /output buildserver /updateprojectfiles
+- ps: dotnet-gitversion /l console /output buildserver /updateprojectfiles
 build_script:
   - dotnet tool install --global dotnet-sonarscanner
   - dotnet sonarscanner begin /k:"jstemerdink:EPi.Libraries.Localization" /n:"EPi.Libraries.Localization" /d:"sonar.host.url=https://sonarcloud.io" /o:"jstemerdink-github" /d:"sonar.login=0b0eec6902ab7d776899f79bfeff15d313dd6e09"

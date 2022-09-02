@@ -14,7 +14,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <Authors>Jeroen Stemerdink</Authors>
     <Company>Jeroen Stemerdink</Company>

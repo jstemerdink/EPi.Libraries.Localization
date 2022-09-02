@@ -27,7 +27,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
 		<Description>Library to create translations within an EPiServer site.</Description>

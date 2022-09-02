@@ -36,6 +36,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Product>EPi.Libraries.Localization</Product>
 		<PackageId>EPi.Libraries.Localization</PackageId>
+		<PackageVersion>6.1.0</PackageVersion>
 		<PackageTags>localization;provider;EPiServerModulePackage</PackageTags>
 		<PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>

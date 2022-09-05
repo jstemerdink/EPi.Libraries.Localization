@@ -26,7 +26,7 @@
 		<AssemblyOriginatorKeyFile>EPiServer.Libraries.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
@@ -43,6 +43,34 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="README.md" />
+	  <None Remove="translation-thumbnail.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </Content>
+	  <Content Include="translation-thumbnail.png">
+	    <Pack>True</Pack>
+	    <PackagePath>contentFiles\any\any\wwwroot\icons\</PackagePath>
+	    <PackageCopyToOutput>true</PackageCopyToOutput>
+	    <CopyToOutputDirectory>true</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 	<ItemGroup>
 	  <None Update="license.txt">
 		  <Pack>True</Pack>
@@ -53,32 +81,24 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="..\Solution Files\icon.png">
+		<Content Include="..\Solution Files\icon.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
-		</None>
+		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EPiServer.CMS" Version="12.0.2" />
+		<PackageReference Include="EPiServer.CMS" Version="12.4.0" />
 	</ItemGroup>
-	<ItemGroup>
-		<None Update="README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<None Update="EPi.Libraries.Localization.targets">
 			<Pack>True</Pack>
 			<PackagePath>build\net5.0\</PackagePath>
 		</None>
 	</ItemGroup>
-	<ItemGroup>
-		<None Update="translation-thumbnail.png">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<None Update="EPi.Libraries.Localization.targets">
 			<Pack>True</Pack>
-			<PackagePath>contentFiles\any\any\wwwroot\icons\cms\pages\</PackagePath>
-			<PackageCopyToOutput>true</PackageCopyToOutput>
-			<CopyToOutputDirectory>true</CopyToOutputDirectory>
+			<PackagePath>build\net6.0\</PackagePath>
 		</None>
 	</ItemGroup>
 </Project>

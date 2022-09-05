@@ -9,24 +9,26 @@ init:
   - set JAVA_HOME_11_X64=C:\Program Files\Java\jdk15
   - set JAVA_HOME=C:\Program Files\Java\jdk15
 install:
-- choco install gitversion.portable -y
-- cmd: nuget sources add -Name EPiServerFeed -Source http://nuget.episerver.com/feed/packages.svc/
+#- choco install gitversion.portable -y
+- ps: dotnet tool install --global GitVersion.Tool --version 5.*
+- ps: dotnet tool install --global dotnet-sonarscanner
+- cmd: nuget sources add -Name EPiServerFeed -Source https://nuget.episerver.com/feed/packages.svc/
 - cmd: nuget sources add -Name EPiServerBetaFeed -Source https://www.myget.org/F/cmscore/api/v2
 before_build:
 - cmd: nuget restore
-- ps: gitversion /l console /output buildserver /updateprojectfiles
+- ps: dotnet-gitversion /l console /output buildserver
 build_script:
-  - dotnet tool install --global dotnet-sonarscanner
   - dotnet sonarscanner begin /k:"jstemerdink:EPi.Libraries.Localization" /n:"EPi.Libraries.Localization" /d:"sonar.host.url=https://sonarcloud.io" /o:"jstemerdink-github" /d:"sonar.login=0b0eec6902ab7d776899f79bfeff15d313dd6e09"
-  - dotnet pack "EPi.Libraries.Localization.sln" /p:Version=%GitVersion_MajorMinorPatch%;AssemblyVersion=%GitVersion_AssemblySemVer%;FileVersion=%GitVersion_AssemblySemFileVer%;ProductVersion=%GitVersion_MajorMinorPatch%;PackageVersion=%GitVersion_NuGetVersion%
+  - dotnet build "EPi.Libraries.Localization.sln" --no-restore -c Release -p:Version=%GitVersion_MajorMinorPatch% -p:AssemblyVersion=%GitVersion_AssemblySemVer% -p:FileVersion=%GitVersion_AssemblySemFileVer% -p:ProductVersion=%GitVersion_MajorMinorPatch%
+  - dotnet pack "EPi.Libraries.Localization.sln" --no-build -c Release -p:PackageVersion=%GitVersion_NuGetVersion%
   - dotnet sonarscanner end /d:"sonar.login=0b0eec6902ab7d776899f79bfeff15d313dd6e09"
 after_build:
 - cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\EPi.Libraries.Localization.%GitVersion_NuGetVersion%.nupkg"
 - cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.nupkg"
 #- cmd: appveyor PushArtifact "EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.nupkg"
-- 7z a EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\net5.0\EPi.Libraries.Localization.dll
+- 7z a EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\*\*.dll 
 - cmd: appveyor PushArtifact "EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip"
-- 7z a EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\net5.0\EPi.Libraries.Localization.Azure.dll
+- 7z a EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\*\*.dll
 - cmd: appveyor PushArtifact "EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.zip"
 #- 7z a EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Views\bin\Release\EPi.Libraries.Localization.Views.dll EPi.Libraries.Localization.Views\Views\*.*\*.cshtml
 #- cmd: appveyor PushArtifact "EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.zip"

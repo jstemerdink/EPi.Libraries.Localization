@@ -13,13 +13,14 @@
     <AssemblyOriginatorKeyFile>EPiServer.Libraries.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <Authors>Jeroen Stemerdink</Authors>
     <Company>Jeroen Stemerdink</Company>
     <Product>EPi.Libraries.Localization.Azure</Product>
-    <Description>Azure translation service for the custom localization provider</Description>
+	  <PackageId>EPi.Libraries.Localization.Azure</PackageId>
+	  <Description>Azure translation service for the custom localization provider</Description>
     <Copyright>Copyright © Jeroen Stemerdink 2022</Copyright>
     <PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>
@@ -29,12 +30,22 @@
     <PackageReleaseNotes>Updated for CMS12</PackageReleaseNotes>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
-  <ItemGroup>
-    <None Update="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+  </PropertyGroup>
 	<ItemGroup>
 		<None Update="license.txt">
 			<Pack>True</Pack>
@@ -48,15 +59,24 @@
     <Compile Remove="GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Solution Files\icon.png">
+    <Content Include="..\Solution Files\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS" Version="12.0.2" />
+    <PackageReference Include="EPiServer.CMS" Version="12.4.0" />
   </ItemGroup>
 </Project>

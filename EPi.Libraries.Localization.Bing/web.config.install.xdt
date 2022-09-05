@@ -1,8 +1,0 @@
-﻿<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-  <appSettings xdt:Transform="InsertIfMissing" />
-  
-  <appSettings>
-    <add key="localization.bing.clientid" value="" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
-    <add key="localization.bing.clientsecret" value="" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
-  </appSettings>
-</configuration>

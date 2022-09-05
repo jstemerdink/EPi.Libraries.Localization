@@ -44,7 +44,7 @@ namespace EPi.Libraries.Localization.Models
     [ContentType(GUID = "{40393E0A-81EF-4B9A-B0AC-F883C036359D}", AvailableInEditMode = true,
         Description = "Container to hold translations", DisplayName = "Translation container",
         GroupName = "Localization")]
-    [ImageUrl("~/icons/cms/pages/translation-thumbnail.png")]
+    [ImageUrl("/icons/translation-thumbnail.png")]
     [AvailableContentTypes(
         Include = new[] { typeof(TranslationItem), typeof(TranslationContainer), typeof(CategoryTranslationContainer) })
     ]

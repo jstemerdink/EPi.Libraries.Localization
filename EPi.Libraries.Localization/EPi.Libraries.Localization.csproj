@@ -57,11 +57,18 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="README.md" />
+	  <None Remove="translation-thumbnail.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Include="README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
+	  </Content>
+	  <Content Include="translation-thumbnail.png">
+	    <Pack>True</Pack>
+	    <PackagePath>contentFiles\any\any\wwwroot\icons\</PackagePath>
+	    <PackageCopyToOutput>true</PackageCopyToOutput>
+	    <CopyToOutputDirectory>true</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 	<ItemGroup>
@@ -92,14 +99,6 @@
 		<None Update="EPi.Libraries.Localization.targets">
 			<Pack>True</Pack>
 			<PackagePath>build\net6.0\</PackagePath>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Update="translation-thumbnail.png">
-			<Pack>True</Pack>
-			<PackagePath>contentFiles\any\any\wwwroot\icons\cms\pages\</PackagePath>
-			<PackageCopyToOutput>true</PackageCopyToOutput>
-			<CopyToOutputDirectory>true</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 </Project>

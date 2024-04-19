@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -89,11 +89,5 @@
 	<ItemGroup>
 		<PackageReference Include="EPiServer.CMS" Version="12.4.0" />
 		<PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="3.0.0" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<None Update="EPi.Libraries.Localization.targets">
-			<Pack>True</Pack>
-			<PackagePath>build\net6.0\</PackagePath>
-		</None>
 	</ItemGroup>
 </Project>

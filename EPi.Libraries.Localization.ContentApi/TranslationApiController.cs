@@ -7,7 +7,7 @@ using EPiServer.Framework.Localization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EPi.Libraries.Localization.Api
+namespace EPi.Libraries.Localization.ContentApi
 {
     /// <summary>
     /// The translation api controller.

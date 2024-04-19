@@ -1,4 +1,4 @@
-﻿# EPi.Libraries.Localization
+﻿# An Api endpoint to return translations. 
 
 By Jeroen Stemerdink
 
@@ -7,13 +7,10 @@ By Jeroen Stemerdink
 [![Platform](https://img.shields.io/badge/platform-.NET%205-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
 [![Platform](https://img.shields.io/badge/platform-.NET%206-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
 [![Platform](https://img.shields.io/badge/EPiServer-%2012-orange.svg?style=flat)](http://world.episerver.com/cms/)
+[![NuGet](https://img.shields.io/badge/NuGet-Release-blue.svg)](http://nuget.episerver.com/en/OtherPages/Package/?packageId=EPi.Libraries.Localization.Bing)
+[![GitHub license](https://img.shields.io/badge/license-MIT%20license-blue.svg?style=flat)](license.txt)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jstemerdink%3AEPi.Libraries.Localization&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jstemerdink%3AEPi.Libraries.Localization)
 
-## Parts
+## About
 
-[A custom localization provider](EPi.Libraries.Localization/README.md)
-
-[An Azure translation plugin for the localization provider](EPi.Libraries.Localization.Azure/README.md)
-
-[A custom endpoint to return translations from Optimizely](EPi.Libraries.Localization.Api/README.md)
-
+Adding this will add an endpoint to retrieve translations from Optimizely.

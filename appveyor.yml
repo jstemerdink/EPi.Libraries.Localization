@@ -25,13 +25,13 @@ build_script:
 after_build:
 - cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\EPi.Libraries.Localization.%GitVersion_NuGetVersion%.nupkg"
 - cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.nupkg"
-#- cmd: appveyor PushArtifact "EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.nupkg"
+- cmd: appveyor PushArtifact "%APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.ContentApi\bin\Release\EPi.Libraries.Localization.ContentApi.%GitVersion_NuGetVersion%.nupkg"
 - 7z a EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization\bin\Release\*\*.dll 
 - cmd: appveyor PushArtifact "EPi.Libraries.Localization.%GitVersion_NuGetVersion%.zip"
 - 7z a EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Azure\bin\Release\*\*.dll
 - cmd: appveyor PushArtifact "EPi.Libraries.Localization.Azure.%GitVersion_NuGetVersion%.zip"
-#- 7z a EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.Views\bin\Release\EPi.Libraries.Localization.Views.dll EPi.Libraries.Localization.Views\Views\*.*\*.cshtml
-#- cmd: appveyor PushArtifact "EPi.Libraries.Localization.Views.%GitVersion_NuGetVersion%.zip"
+- 7z a EPi.Libraries.Localization.ContentApi.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Localization.ContentApi\bin\Release\*\*.dll
+- cmd: appveyor PushArtifact "EPi.Libraries.Localization.ContentApi.%GitVersion_NuGetVersion%.zip"
 #before_package:
 #- ps: >-
 #    Write-Host -NoNewline "Installing NuGet 3.3.0..."

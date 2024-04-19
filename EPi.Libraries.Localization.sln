@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPi.Libraries.Localization"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPi.Libraries.Localization.Azure", "EPi.Libraries.Localization.Azure\EPi.Libraries.Localization.Azure.csproj", "{50CE1D3E-3CE7-4427-8A08-1DA17F589733}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPi.Libraries.Localization.ContentApi", "EPi.Libraries.Localization.Api\EPi.Libraries.Localization.ContentApi.csproj", "{EB9B647F-5123-41AA-8781-1E604175FFA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{50CE1D3E-3CE7-4427-8A08-1DA17F589733}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50CE1D3E-3CE7-4427-8A08-1DA17F589733}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50CE1D3E-3CE7-4427-8A08-1DA17F589733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB9B647F-5123-41AA-8781-1E604175FFA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB9B647F-5123-41AA-8781-1E604175FFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB9B647F-5123-41AA-8781-1E604175FFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB9B647F-5123-41AA-8781-1E604175FFA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

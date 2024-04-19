@@ -30,13 +30,13 @@
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
-		<Description>Library to create translations within an EPiServer site.</Description>
-		<Copyright>Copyright © Jeroen Stemerdink 2022</Copyright>
+		<Description>Library to return translations from an EPiServer site through an api.</Description>
+		<Copyright>Copyright © Jeroen Stemerdink 20224</Copyright>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Product>EPi.Libraries.Localization</Product>
-		<PackageId>EPi.Libraries.Localization</PackageId>
-		<PackageTags>localization;provider;EPiServerModulePackage</PackageTags>
+		<Product>EPi.Libraries.Localization.ContentApi</Product>
+		<PackageId>EPi.Libraries.Localization.ContentApi</PackageId>
+		<PackageTags>localization;content api;EPiServerModulePackage</PackageTags>
 		<PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>
 		<RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
@@ -50,6 +50,12 @@
 	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.tinymce\3.1.0\contentFiles\any\any\modules\_protected\EPiServer.Cms.TinyMce\EPiServer.Cms.TinyMce.zip" />
+	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui.admin\12.4.0\contentFiles\any\any\modules\_protected\EPiServer.Cms.UI.Admin\EPiServer.Cms.UI.Admin.zip" />
+	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui.settings\12.4.0\contentFiles\any\any\modules\_protected\EPiServer.Cms.UI.Settings\EPiServer.Cms.UI.Settings.zip" />
+	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui.visitorgroups\12.4.0\contentFiles\any\any\modules\_protected\EPiServer.Cms.UI.VisitorGroups\EPiServer.Cms.UI.VisitorGroups.zip" />
+	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui\12.4.0\contentFiles\any\any\modules\_protected\CMS\CMS.zip" />
+	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui\12.4.0\contentFiles\any\any\modules\_protected\Shell\Shell.zip" />
 	  <None Remove="README.md" />
 	  <None Remove="translation-thumbnail.png" />
 	</ItemGroup>
@@ -82,6 +88,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="EPiServer.CMS" Version="12.4.0" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="3.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<None Update="EPi.Libraries.Localization.targets">

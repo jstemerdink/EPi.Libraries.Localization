@@ -155,3 +155,4 @@ $RECYCLE.BIN/
 .vs/
 EPi.Libraries.Localization.Azure/modules/
 EPi.Libraries.Localization/modules/
+EPi.Libraries.Localization.Api/modules/

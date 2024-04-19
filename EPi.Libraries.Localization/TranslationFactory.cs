@@ -150,11 +150,11 @@ namespace EPi.Libraries.Localization
                 }
                 catch (ActivationException activationException)
                 {
-                    this.Logger.Service.LogInformation("[Localization] No translation service available", activationException);
+                    this.Logger.Service.LogError(activationException,"[Localization] No translation service available");
                 }
                 catch (InvalidOperationException invalidOperationException)
                 {
-                    this.Logger.Service.LogInformation("[Localization] No translation service available", invalidOperationException);
+                    this.Logger.Service.LogError(invalidOperationException,"[Localization] No translation service available");
                 }
 
                 return null;
@@ -374,8 +374,9 @@ namespace EPi.Libraries.Localization
         /// <returns>System.Reflection.PropertyInfo</returns>
         private PropertyInfo GetTranslationContainerProperty(ContentData page)
         {
-            PropertyInfo translationContainerProperty = page.GetType().GetProperties()
-                .Where(predicate: this.HasAttribute<TranslationContainerAttribute>).FirstOrDefault();
+            PropertyInfo[] properties = page.GetType().GetProperties();
+
+            PropertyInfo translationContainerProperty = Array.Find(properties, this.HasAttribute<TranslationContainerAttribute>);
 
             return translationContainerProperty;
         }

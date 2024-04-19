@@ -25,7 +25,3 @@ Don't forget to add at least a ```Localization:AzureSubscriptionkey``` to the ap
     "AzureRegion": "if you have set a specific region"
   },
 ```
-
-> *Powered by ReSharper*
-
-> [![image](https://i0.wp.com/jstemerdink.files.wordpress.com/2017/08/logo_resharper.png)](http://jetbrains.com)

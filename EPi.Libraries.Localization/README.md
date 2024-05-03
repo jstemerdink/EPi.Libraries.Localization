@@ -87,9 +87,3 @@ On the “TranslationItem” I have added three properties you can use on a temp
 * ```MissingValues```:  the languages that have no translation yet.
 * ```LookupKey```: the key to use in e.g. the Translate WebControl.
 * ```TranslatedValues```:  a dictionary containing the language and the translation.
-
-
-
-> *Powered by ReSharper*
-
-> [![image](https://i0.wp.com/jstemerdink.files.wordpress.com/2017/08/logo_resharper.png)](http://jetbrains.com)

@@ -14,3 +14,13 @@ By Jeroen Stemerdink
 ## About
 
 Adding this will add an endpoint to retrieve translations from Optimizely.
+
+To get translations for a single language add a ```Accept-Language``` header.
+
+All translations: ```/api/translations``` 
+
+Translations below a key: ```api/translations/enums.episerver.forms.samples.criteria```
+
+Translation for a single key in a specific language: ```/api/translations/{{languagecode}}/enums.episerver.forms.samples.criteria.fieldvaluecomparecondition.notequals```
+
+NOTE: For the keys the '/' has been replaced with a '.'  So a lookup through the api with ```enums.episerver.forms.samples.criteria.fieldvaluecomparecondition.notequals```, would result in a lookup for ```/enums/episerver/forms/samples/criteria/fieldvaluecomparecondition/notequals```

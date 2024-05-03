@@ -57,18 +57,11 @@
 	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui\12.4.0\contentFiles\any\any\modules\_protected\CMS\CMS.zip" />
 	  <None Remove="D:\Jeroen.Stemerdink\.nuget\packages\episerver.cms.ui\12.4.0\contentFiles\any\any\modules\_protected\Shell\Shell.zip" />
 	  <None Remove="README.md" />
-	  <None Remove="translation-thumbnail.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Include="README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
-	  </Content>
-	  <Content Include="translation-thumbnail.png">
-	    <Pack>True</Pack>
-	    <PackagePath>contentFiles\any\any\wwwroot\icons\</PackagePath>
-	    <PackageCopyToOutput>true</PackageCopyToOutput>
-	    <CopyToOutputDirectory>true</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 	<ItemGroup>

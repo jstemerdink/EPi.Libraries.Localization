@@ -1,4 +1,4 @@
-﻿# An Azure translation plugin for the localization provider. 
+﻿# An Api endpoint to return translations. 
 
 By Jeroen Stemerdink
 
@@ -13,15 +13,14 @@ By Jeroen Stemerdink
 
 ## About
 
-Adding this in combination with the localization provider will create a lanaguage version for all enabled languages that have no language version when publishing your translation.
+Adding this will add an endpoint to retrieve translations from Optimizely.
 
+To get translations for a single language add a ```Accept-Language``` header.
 
-Don't forget to add at least a ```Localization:AzureSubscriptionkey``` to the appsettings.json. 
+All translations: ```/api/translations``` 
 
-```C#
-"Localization": {
-    "AzureSubscriptionKey": "Your Key",
-    "AzureEndpoint": "if different from the default",
-    "AzureRegion": "if you have set a specific region"
-  },
-```
+Translations below a key: ```api/translations/enums.episerver.forms.samples.criteria```
+
+Translation for a single key in a specific language: ```/api/translations/{{languagecode}}/enums.episerver.forms.samples.criteria.fieldvaluecomparecondition.notequals```
+
+NOTE: For the keys the '/' has been replaced with a '.'  So a lookup through the api with ```enums.episerver.forms.samples.criteria.fieldvaluecomparecondition.notequals```, would result in a lookup for ```/enums/episerver/forms/samples/criteria/fieldvaluecomparecondition/notequals```

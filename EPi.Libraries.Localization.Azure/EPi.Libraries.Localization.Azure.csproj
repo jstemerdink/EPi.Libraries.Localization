@@ -13,7 +13,7 @@
     <AssemblyOriginatorKeyFile>EPiServer.Libraries.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <Authors>Jeroen Stemerdink</Authors>
@@ -29,14 +29,6 @@
     <PackageTags>localization;provider;plugin</PackageTags>
     <PackageReleaseNotes>Updated for CMS12</PackageReleaseNotes>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>

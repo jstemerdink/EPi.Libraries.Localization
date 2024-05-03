@@ -15,10 +15,5 @@ By Jeroen Stemerdink
 
 [An Azure translation plugin for the localization provider](EPi.Libraries.Localization.Azure/README.md)
 
-
-
-> *Powered by ReSharper*
-
-> [![image](https://i0.wp.com/jstemerdink.files.wordpress.com/2017/08/logo_resharper.png)](http://jetbrains.com)
-
+[A custom endpoint to return translations from Optimizely](EPi.Libraries.Localization.Api/README.md)
 

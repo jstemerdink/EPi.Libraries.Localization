@@ -174,7 +174,7 @@ namespace EPi.Libraries.Localization.Azure
                     // Read response as a string.
                     string result = response.Content.ReadAsStringAsync().Result;
 
-                    this.logger.LogInformation($"[Localization] Returned result: {result} .");
+                    this.logger.LogInformation($"[Localization] Returned result: {result}.");
 
                     if (!string.IsNullOrWhiteSpace(value: result))
                     {

@@ -58,7 +58,7 @@ namespace EPi.Libraries.Localization
         /// <summary>
         ///     Check if the initialization has been done.
         /// </summary>
-        private static bool initialized;
+        private bool initialized;
 
         /// <summary>
         ///     The provider based localization service

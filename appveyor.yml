@@ -14,7 +14,7 @@ install:
 - ps: dotnet tool install --global dotnet-sonarscanner
 - ps: Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
     & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.100' -InstallDir "$env:ProgramFiles\dotnet"
-- cmd: nuget sources add -Name EPiServerFeed -Source https://nuget.episerver.com/feed/packages.svc/
+- cmd: nuget sources add -Name EPiServerFeed -Source https://api.nuget.optimizely.com/v3/index.json
 - cmd: nuget sources add -Name EPiServerBetaFeed -Source https://www.myget.org/F/cmscore/api/v2
 before_build:
 - cmd: nuget restore

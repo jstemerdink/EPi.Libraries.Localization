@@ -1,4 +1,4 @@
-﻿// Copyright © 2022 Jeroen Stemerdink.
+﻿// Copyright © 2026 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -18,6 +18,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Text.Json;
+
 namespace EPi.Libraries.Localization.Azure
 {
     using System;
@@ -29,8 +31,6 @@ namespace EPi.Libraries.Localization.Azure
 
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-
-    using Newtonsoft.Json;
 
     /// <summary>
     ///     Class TranslationService.
@@ -148,46 +148,44 @@ namespace EPi.Libraries.Localization.Azure
                 string route = $"/translate?api-version=3.0&from={fromLang}&to={toLang}";
 
                 object[] body = { new { Text = toBeTranslated } };
-                string requestBody = JsonConvert.SerializeObject(value: body);
+                string requestBody = JsonSerializer.Serialize(value: body);
 
-                using (HttpClient client = new HttpClient())
-                using (HttpRequestMessage request = new HttpRequestMessage())
+                using HttpClient client = new HttpClient();
+                using HttpRequestMessage request = new HttpRequestMessage();
+
+                // Build the request.
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri(Endpoint + route);
+                request.Content = new StringContent(
+                    content: requestBody,
+                    encoding: Encoding.UTF8,
+                    "application/json");
+
+                request.Headers.Add("Ocp-Apim-Subscription-Key", value: this.AzureSubscriptionKey);
+
+                if (!this.AzureRegion.Equals(value: GlobalRegion))
                 {
-                    // Build the request.
-                    request.Method = HttpMethod.Post;
-                    request.RequestUri = new Uri(Endpoint + route);
-                    request.Content = new StringContent(
-                        content: requestBody,
-                        encoding: Encoding.UTF8,
-                        "application/json");
-
-                    request.Headers.Add("Ocp-Apim-Subscription-Key", value: this.AzureSubscriptionKey);
-
-                    if (!this.AzureRegion.Equals(value: GlobalRegion))
-                    {
-                        request.Headers.Add("Ocp-Apim-Subscription-Region", value: this.AzureRegion);
-                    }
-
-                    // Send the request and get response.
-                    HttpResponseMessage response = client.Send(request: request);
-
-                    // Read response as a string.
-                    string result = response.Content.ReadAsStringAsync().Result;
-
-                    this.logger.LogInformation($"[Localization] Returned result: {result}.");
-
-                    if (!string.IsNullOrWhiteSpace(value: result))
-                    {
-                        TranslationResult[] deserializedOutput =
-                            JsonConvert.DeserializeObject<TranslationResult[]>(value: result);
-
-                        return deserializedOutput[0].Translations[0].Text;
-                    }
-
-                    this.logger.LogInformation("[Localization] Getting translations from Azure returned empty result.");
-
-                    return null;
+                    request.Headers.Add("Ocp-Apim-Subscription-Region", value: this.AzureRegion);
                 }
+
+                // Send the request and get response.
+                HttpResponseMessage response = client.Send(request: request);
+
+                // Read response as a string.
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                this.logger.LogInformation($"[Localization] Returned result: {result}");
+
+                if (!string.IsNullOrWhiteSpace(value: result))
+                {
+                    TranslationResult[] deserializedOutput = JsonSerializer.Deserialize<TranslationResult[]>(result);
+
+                    return deserializedOutput[0].Translations[0].Text;
+                }
+
+                this.logger.LogInformation("[Localization] Getting translations from Azure returned empty result");
+
+                return null;
             }
             catch (Exception exception)
             {

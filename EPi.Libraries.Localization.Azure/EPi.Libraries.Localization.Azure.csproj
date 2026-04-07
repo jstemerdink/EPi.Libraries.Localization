@@ -13,7 +13,7 @@
     <AssemblyOriginatorKeyFile>EPiServer.Libraries.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <Authors>Jeroen Stemerdink</Authors>
@@ -21,7 +21,7 @@
     <Product>EPi.Libraries.Localization.Azure</Product>
 	  <PackageId>EPi.Libraries.Localization.Azure</PackageId>
 	  <Description>Azure translation service for the custom localization provider</Description>
-    <Copyright>Copyright © Jeroen Stemerdink 2022</Copyright>
+    <Copyright>Copyright © Jeroen Stemerdink 2026</Copyright>
     <PackageProjectUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jstemerdink/EPi.Libraries.Localization</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -30,11 +30,11 @@
     <PackageReleaseNotes>Updated for CMS12</PackageReleaseNotes>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
   </PropertyGroup>
@@ -69,6 +69,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS" Version="12.4.0" />
+    <PackageReference Include="EPiServer.CMS" Version="13.0.0" />
   </ItemGroup>
 </Project>

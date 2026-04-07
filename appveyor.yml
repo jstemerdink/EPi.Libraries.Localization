@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Visual Studio 2022
+image: Visual Studio 2026
 configuration: Release
 environment:
   github_token: 'secure: 8hRABPxil16K36mDeJWkTnPwXafLynrWWUwcI7YYyQBcMKXhRJVEqmMPTbfMWHUO'

@@ -1,4 +1,4 @@
-﻿// Copyright © 2022 Jeroen Stemerdink.
+﻿// Copyright © 2026 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -17,6 +17,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
+using System.Text.Json.Serialization;
+
 namespace EPi.Libraries.Localization.Models
 {
     using System.Collections.Generic;
@@ -31,8 +34,6 @@ namespace EPi.Libraries.Localization.Models
     using EPiServer.DataAbstraction;
     using EPiServer.DataAnnotations;
     using EPiServer.ServiceLocation;
-
-    using Newtonsoft.Json;
 
     /// <summary>
     ///     The translation PageType.
@@ -58,10 +59,8 @@ namespace EPi.Libraries.Localization.Models
             get
             {
                 // If this is a category translation, no need to calculate a path.
-                CategoryTranslationContainer categoryTranslationContainer;
-                this.ContentRepository.Service.TryGet(this.ParentLink, out categoryTranslationContainer);
-
-                if (categoryTranslationContainer != null)
+                if (this.ContentRepository.Service.TryGet(this.ParentLink,
+                        out CategoryTranslationContainer categoryTranslationContainer))
                 {
                     return string.Format(
                         CultureInfo.InvariantCulture,
@@ -69,19 +68,22 @@ namespace EPi.Libraries.Localization.Models
                         this.OriginalText);
                 }
 
-                // Use the masterlanguage branch, that one is always available.
-                TranslationItem masterLanguagePage;
+                if (string.IsNullOrWhiteSpace(this.OriginalText))
+                {
+                    return "-";
+                }
 
+                // Use the master language branch, that one is always available.
                 if (!this.ContentRepository.Service.TryGet(
-                    this.PageLink,
-                    this.MasterLanguage, out masterLanguagePage))
+                        this.ContentLink,
+                        this.MasterLanguage, out TranslationItem masterLanguagePage))
                 {
                     return "-";
                 }
 
                 // Get the ancestors
                 IEnumerable<IContent> ancestors =
-                    this.ContentRepository.Service.GetAncestors(masterLanguagePage.PageLink).Reverse();
+                    this.ContentRepository.Service.GetAncestors(masterLanguagePage.ContentLink).Reverse();
 
                 // Get all translation containers, skip the main one.
                 List<string> keyParts =
@@ -107,7 +109,7 @@ namespace EPi.Libraries.Localization.Models
         {
             get
             {
-                return TranslationFactory.Instance.GetMissingValues(this.PageLink);
+                return TranslationFactory.Instance.GetMissingValues(this.ContentLink);
             }
         }
 
@@ -141,7 +143,7 @@ namespace EPi.Libraries.Localization.Models
         {
             get
             {
-                return TranslationFactory.Instance.GetTranslatedValues(this.PageLink);
+                return TranslationFactory.Instance.GetTranslatedValues(this.ContentLink);
             }
         }
 

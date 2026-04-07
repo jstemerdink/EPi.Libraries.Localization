@@ -1,4 +1,4 @@
-﻿// Copyright © 2022 Jeroen Stemerdink.
+﻿// Copyright © 2026 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -26,7 +26,7 @@ namespace EPi.Libraries.Localization
     using System.Linq;
     using System.Threading;
 
-    using EPi.Libraries.Localization.Models;
+    using Models;
 
     using EPiServer;
     using EPiServer.Core;
@@ -43,7 +43,7 @@ namespace EPi.Libraries.Localization
         /// <summary>
         /// The cache lock
         /// </summary>
-        private readonly ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(
+        private readonly ReaderWriterLockSlim cacheLock = new(
             LockRecursionPolicy.SupportsRecursion);
 
         /// <summary>
@@ -107,10 +107,7 @@ namespace EPi.Libraries.Localization
         /// <exception cref="LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered read mode. -or-The current thread may not acquire the read lock when it already holds the write lock. -or-The recursion number would exceed the capacity of the counter. This limit is so large that applications should never encounter it. </exception>
         /// <exception cref="ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed. </exception>
         /// <exception cref="SynchronizationLockException">The current thread has not entered the lock in read mode. </exception>
-        public override IEnumerable<ResourceItem> GetAllStrings(
-            string originalKey,
-            string[] normalizedKey,
-            CultureInfo culture)
+        public override IEnumerable<ResourceItem> GetAllStrings(string originalKey, ReadOnlyMemory<char>[] normalizedKey, CultureInfo culture)
         {
             IEnumerable<ResourceItem> allStrings;
 
@@ -140,7 +137,7 @@ namespace EPi.Libraries.Localization
         /// <exception cref="LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered read mode. -or-The current thread may not acquire the read lock when it already holds the write lock. -or-The recursion number would exceed the capacity of the counter. This limit is so large that applications should never encounter it. </exception>
         /// <exception cref="ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed. </exception>
         /// <exception cref="SynchronizationLockException">The current thread has not entered the lock in read mode. </exception>
-        public override string GetString(string originalKey, string[] normalizedKey, CultureInfo culture)
+        public override string GetString(string originalKey, ReadOnlyMemory<char>[] normalizedKey, CultureInfo culture)
         {
             string translation;
 
@@ -168,9 +165,6 @@ namespace EPi.Libraries.Localization
         ///     A collection of the name/value pairs representing the provider-specific attributes specified in the configuration
         ///     for this provider.
         /// </param>
-        /// <exception cref="ArgumentNullException">The name of the provider is null.</exception>
-        /// <exception cref="ArgumentException">The name of the provider has a length of zero.</exception>
-        /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" /> on a provider after the provider has already been initialized.</exception>
         /// <exception cref="LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock in any mode. -or-The current thread has entered read mode, so trying to enter the lock in write mode would create the possibility of a deadlock. -or-The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed. </exception>
         /// <exception cref="SynchronizationLockException">The current thread has not entered the lock in write mode.</exception>
@@ -249,23 +243,17 @@ namespace EPi.Libraries.Localization
 
             foreach (PageData child in children)
             {
-                TranslationContainer translationContainer = child as TranslationContainer;
-
-                if (translationContainer != null)
+                if (child is TranslationContainer translationContainer)
                 {
-                    this.AddKey(child.PageLink, cultureInfo);
+                    this.AddKey(translationContainer.ContentLink, cultureInfo);
                 }
 
-                CategoryTranslationContainer categoryTranslationContainer = child as CategoryTranslationContainer;
-
-                if (categoryTranslationContainer != null)
+                if (child is CategoryTranslationContainer categoryTranslationContainer)
                 {
-                    this.AddKey(child.PageLink, cultureInfo);
+                    this.AddKey(categoryTranslationContainer.ContentLink, cultureInfo);
                 }
 
-                TranslationItem translationItem = child as TranslationItem;
-
-                if (translationItem != null)
+                if (child is TranslationItem translationItem)
                 {
                     this.AddString(cultureInfo, translationItem.LookupKey, translationItem.Translation);
                 }

@@ -2,9 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using EPiServer.ContentApi.Core.Internal;
 using EPiServer.Framework.Localization;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EPi.Libraries.Localization.ContentApi
@@ -14,8 +12,6 @@ namespace EPi.Libraries.Localization.ContentApi
     /// </summary>
     [DisplayName("Translation Api")]
     [ApiController]
-    [Authorize(Policy = "ContentDeliveryAuthorizationPolicy")]
-    [ContentLanguageFilter]
     [Route("api/translations")]
     public class TranslationApiController : ControllerBase
     {

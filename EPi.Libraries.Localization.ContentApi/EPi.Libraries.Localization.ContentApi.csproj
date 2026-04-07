@@ -26,12 +26,12 @@
 		<AssemblyOriginatorKeyFile>EPiServer.Libraries.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
 		<Description>Library to return translations from an EPiServer site through an api.</Description>
-		<Copyright>Copyright © Jeroen Stemerdink 20224</Copyright>
+		<Copyright>Copyright © Jeroen Stemerdink 20264</Copyright>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Product>EPi.Libraries.Localization.ContentApi</Product>
@@ -43,10 +43,10 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0|AnyCPU'">
 	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0|AnyCPU'">
 	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
 	</PropertyGroup>
 	<ItemGroup>
@@ -80,7 +80,6 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EPiServer.CMS" Version="12.4.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="3.0.0" />
+		<PackageReference Include="EPiServer.CMS" Version="13.0.0" />
 	</ItemGroup>
 </Project>

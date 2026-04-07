@@ -1,4 +1,4 @@
-﻿// Copyright © 2022 Jeroen Stemerdink.
+﻿// Copyright © 2026 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -17,6 +17,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
+using System.Text.Json.Serialization;
+
 namespace EPi.Libraries.Localization.Models
 {
     using System.Collections.ObjectModel;
@@ -26,8 +29,6 @@ namespace EPi.Libraries.Localization.Models
     using EPiServer.DataAbstraction;
     using EPiServer.DataAnnotations;
     using EPiServer.Filters;
-
-    using Newtonsoft.Json;
 
     /// <summary>
     ///     A container to hold translations.
@@ -46,7 +47,7 @@ namespace EPi.Libraries.Localization.Models
         GroupName = "Localization")]
     [ImageUrl("/icons/translation-thumbnail.png")]
     [AvailableContentTypes(
-        Include = new[] { typeof(TranslationItem), typeof(TranslationContainer), typeof(CategoryTranslationContainer) })
+        Include = [typeof(TranslationItem), typeof(TranslationContainer), typeof(CategoryTranslationContainer)])
     ]
     public class TranslationContainer : PageData
     {
@@ -86,13 +87,7 @@ namespace EPi.Libraries.Localization.Models
         ///     Gets the missing translations for this item.
         /// </summary>
         [JsonIgnore]
-        public ReadOnlyCollection<string> MissingValues
-        {
-            get
-            {
-                return TranslationFactory.Instance.GetMissingValues(this.PageLink);
-            }
-        }
+        public ReadOnlyCollection<string> MissingValues => TranslationFactory.Instance.GetMissingValues(this.ContentLink);
 
         /// <summary>
         ///     Sets the default property values on the page data.

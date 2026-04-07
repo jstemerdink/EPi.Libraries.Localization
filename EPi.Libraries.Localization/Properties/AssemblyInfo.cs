@@ -1,4 +1,4 @@
-﻿// Copyright © 2022 Jeroen Stemerdink.
+﻿// Copyright © 2026 Jeroen Stemerdink.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -18,7 +18,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]

@@ -31,7 +31,7 @@
 		<Authors>Jeroen Stemerdink</Authors>
 		<Company>Jeroen Stemerdink</Company>
 		<Description>Library to return translations from an EPiServer site through an api.</Description>
-		<Copyright>Copyright © Jeroen Stemerdink 20264</Copyright>
+		<Copyright>Copyright © Jeroen Stemerdink 2026</Copyright>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Product>EPi.Libraries.Localization.ContentApi</Product>

@@ -50,7 +50,7 @@ namespace EPi.Libraries.Localization
         /// <summary>
         ///     The synclock object.
         /// </summary>
-        private static readonly object SyncLock = new object();
+        private static readonly object SyncLock = new();
 
         /// <summary>
         ///     The one and only TranslationFactory instance.

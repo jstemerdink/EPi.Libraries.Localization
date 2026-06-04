@@ -187,21 +187,30 @@ namespace EPi.Libraries.Localization
         /// </remarks>
         public void Uninitialize(InitializationEngine context)
         {
-            // If there is no context, we can't do anything.
-            if (context == null)
-            {
-                return;
-            }
-
-            // If already uninitialized, no need to do it again.
-            if (!initialized)
+            if (context == null || !this.initialized)
             {
                 return;
             }
 
             this.Logger.LogInformation("[Localization] Uninitializing translation provider");
 
-            initialized = this.UnLoadProvider(this.TranslationProvider);
+            // Detach every handler that was attached in Initialize.
+            context.InitComplete -= this.InitComplete;
+
+            if (this.ContentEvents != null)
+            {
+                this.ContentEvents.PublishedContent -= this.InstancePublishedContent;
+                this.ContentEvents.MovedContent     -= this.InstanceChangedContent;
+                this.ContentEvents.DeletedContent   -= this.InstanceChangedContent;
+            }
+
+            if (this.EventService != null)
+            {
+                Event translationsUpdated = this.EventService.Get(TranslationsUpdatedEventId);
+                translationsUpdated.Raised -= this.TranslationsUpdatedEventRaised;
+            }
+
+            this.initialized = this.UnLoadProvider(this.TranslationProvider);
 
             this.Logger.LogInformation("[Localization] Translation provider uninitialized");
         }

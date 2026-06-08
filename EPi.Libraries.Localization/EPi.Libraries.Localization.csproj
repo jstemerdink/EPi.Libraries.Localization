@@ -48,7 +48,7 @@
 	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0|AnyCPU'">
-	  <WarningsNotAsErrors>CS7035;CS7034</WarningsNotAsErrors>
+	  <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904;CS7035;CS7034</WarningsNotAsErrors>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="README.md" />

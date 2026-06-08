@@ -36,30 +36,25 @@ namespace EPi.Libraries.Localization.Azure
     ///     Class TranslationService.
     /// </summary>
     [ServiceConfiguration(typeof(ITranslationService))]
-    public class TranslationService : ITranslationService
+    public class TranslationService(IConfiguration configuration, ILogger<TranslationService> logger)
+        : ITranslationService
     {
         private const string Endpoint = "https://api.cognitive.microsofttranslator.com/";
 
         private const string GlobalRegion = "global";
 
-        private readonly IConfiguration configuration;
+        private static readonly HttpClient SharedClient = new();
 
         /// <summary>
         ///     Initializes the <see cref="ILogger{T}">LogManager</see> for the <see cref="TranslationService" /> class.
         /// </summary>
-        private readonly ILogger<TranslationService> logger;
+        private readonly ILogger<TranslationService> logger = logger;
 
         private string azureEndpoint;
 
         private string azureRegion;
 
         private string azureSubscriptionKey;
-
-        public TranslationService(IConfiguration configuration, ILogger<TranslationService> logger)
-        {
-            this.configuration = configuration;
-            this.logger = logger;
-        }
 
         /// <summary>
         /// Gets the azure endpoint.
@@ -74,7 +69,7 @@ namespace EPi.Libraries.Localization.Azure
                     return this.azureEndpoint;
                 }
 
-                string keyFromConfig = this.configuration["Localization:AzureEndpoint"];
+                string keyFromConfig = configuration["Localization:AzureEndpoint"];
 
                 if (string.IsNullOrWhiteSpace(value: keyFromConfig))
                 {
@@ -98,7 +93,7 @@ namespace EPi.Libraries.Localization.Azure
                     return this.azureRegion;
                 }
 
-                string keyFromConfig = this.configuration["Localization:AzureRegion"];
+                string keyFromConfig = configuration["Localization:AzureRegion"];
 
                 if (string.IsNullOrWhiteSpace(value: keyFromConfig))
                 {
@@ -123,7 +118,7 @@ namespace EPi.Libraries.Localization.Azure
                     return this.azureSubscriptionKey;
                 }
 
-                string keyFromConfig = this.configuration["Localization:AzureSubscriptionKey"];
+                string keyFromConfig = configuration["Localization:AzureSubscriptionKey"];
 
                 if (string.IsNullOrWhiteSpace(value: keyFromConfig))
                 {
@@ -147,15 +142,14 @@ namespace EPi.Libraries.Localization.Azure
             {
                 string route = $"/translate?api-version=3.0&from={fromLang}&to={toLang}";
 
-                object[] body = { new { Text = toBeTranslated } };
+                object[] body = [new { Text = toBeTranslated }];
                 string requestBody = JsonSerializer.Serialize(value: body);
 
-                using HttpClient client = new HttpClient();
                 using HttpRequestMessage request = new HttpRequestMessage();
 
                 // Build the request.
                 request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri(Endpoint + route);
+                request.RequestUri = new Uri(AzureEndpoint + route);
                 request.Content = new StringContent(
                     content: requestBody,
                     encoding: Encoding.UTF8,
@@ -169,12 +163,12 @@ namespace EPi.Libraries.Localization.Azure
                 }
 
                 // Send the request and get response.
-                HttpResponseMessage response = client.Send(request: request);
+                HttpResponseMessage response = SharedClient.Send(request: request);
 
                 // Read response as a string.
                 string result = response.Content.ReadAsStringAsync().Result;
 
-                this.logger.LogInformation($"[Localization] Returned result: {result}");
+                this.logger.LogInformation("[Localization] Returned result: {Result}", result);
 
                 if (!string.IsNullOrWhiteSpace(value: result))
                 {
